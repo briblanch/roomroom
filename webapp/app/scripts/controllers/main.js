@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name webappApp.controller:MainCtrl
+ * @name capstone.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the webappApp
+ * Controller of the capstone
  */
-angular.module('webappApp')
+angular.module('capstone')
     .controller('MainCtrl', function ($scope) {
         $scope.awesomeThings = [
             'HTML5 Boilerplate',
