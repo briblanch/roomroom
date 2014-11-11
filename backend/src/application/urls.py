@@ -37,6 +37,7 @@ app.add_url_rule('/examples/<int:example_id>/edit', 'edit_example', view_func=vi
 # Delete an example
 app.add_url_rule('/examples/<int:example_id>/delete', view_func=views.delete_example, methods=['POST'])
 
+appd.add_url_rule('/api/addroom', view_func=views.addroom, methods=['GET'])
 
 tasks = [
     {
@@ -52,6 +53,10 @@ tasks = [
         'done': False
     }
 ]
+
+@app.route('/')
+def root():
+    return app.send_static_file('index.html')
 
 @app.route('/todo', methods = ['GET'])
 def get_tasks():

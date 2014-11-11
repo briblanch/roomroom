@@ -103,3 +103,5 @@ def warmup():
     """
     return ''
 
+def addroom:
+    return render_template('index.html')
