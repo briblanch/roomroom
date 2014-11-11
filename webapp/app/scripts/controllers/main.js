@@ -9,6 +9,13 @@
  */
 
 angular.module('capstone')
-    .controller('MainCtrl', function ($scope) {
+    .controller('MainCtrl', function($scope, RoomApi) {
         $scope.rooms = [];
+        $scope.addRoom = function(room) {
+            if(!room.name || !room.calendar) {
+                // Show some error
+            } else {
+                // Make server call
+            }
+        };
     });
