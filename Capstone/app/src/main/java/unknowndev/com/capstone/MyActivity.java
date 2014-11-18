@@ -56,7 +56,6 @@ public class MyActivity extends Activity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        public RelativeLayout relativeLayout;
         public Context mContext;
 
         public PlaceholderFragment() {
@@ -69,9 +68,8 @@ public class MyActivity extends Activity {
 
             // table creation
             mContext = getActivity().getApplicationContext();
-            TableLayout tableLayout = new TableLayout(mContext);
-            tableLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-            tableLayout.setStretchAllColumns(true);
+            TableLayout tableLayout = (TableLayout) rootView.findViewById(R.id.room_table);
+
             TableRow tableRow;
             TextView textView;
 
@@ -80,16 +78,17 @@ public class MyActivity extends Activity {
                 for(int j = 0; j < 3; j++) {
                     textView = new TextView(mContext);
                     textView.setTextColor(Color.BLACK);
-                    textView.setText("test");
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append(i).append(" ").append(j);
+
+                    textView.setText(stringBuilder.toString());
                     textView.setGravity(Gravity.CENTER);
                     textView.setPadding(20, 20, 20, 20);
                     tableRow.addView(textView);
                 }
-
                 tableLayout.addView(tableRow);
             }
-
-            getActivity().setContentView(tableLayout);
 
             return rootView;
         }
