@@ -75,6 +75,14 @@ public class MyActivity extends Activity {
 
             for(int i = 0; i < 3; i++) {
                 tableRow = new TableRow(mContext);
+                tableRow.setClickable(true);
+                tableRow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // YOLO
+                        System.out.println("POOP\n");
+                    }
+                });
                 for(int j = 0; j < 3; j++) {
                     textView = new TextView(mContext);
                     textView.setTextColor(Color.BLACK);
