@@ -3,14 +3,20 @@ package unknowndev.com.capstone;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
-
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 
 public class MyActivity extends Activity {
@@ -50,6 +56,8 @@ public class MyActivity extends Activity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+        public RelativeLayout relativeLayout;
+        public Context mContext;
 
         public PlaceholderFragment() {
         }
@@ -58,6 +66,31 @@ public class MyActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_my, container, false);
+
+            // table creation
+            mContext = getActivity().getApplicationContext();
+            TableLayout tableLayout = new TableLayout(mContext);
+            tableLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+            tableLayout.setStretchAllColumns(true);
+            TableRow tableRow;
+            TextView textView;
+
+            for(int i = 0; i < 3; i++) {
+                tableRow = new TableRow(mContext);
+                for(int j = 0; j < 3; j++) {
+                    textView = new TextView(mContext);
+                    textView.setTextColor(Color.BLACK);
+                    textView.setText("test");
+                    textView.setGravity(Gravity.CENTER);
+                    textView.setPadding(20, 20, 20, 20);
+                    tableRow.addView(textView);
+                }
+
+                tableLayout.addView(tableRow);
+            }
+
+            getActivity().setContentView(tableLayout);
+
             return rootView;
         }
     }
