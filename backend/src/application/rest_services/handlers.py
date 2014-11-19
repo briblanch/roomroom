@@ -13,15 +13,19 @@ def add_room(request_data):
 		room_to_add['id'] = room_key.id()
 		return room_to_add
 
-
-# Not sure what the list of rooms looks like
-def get_rooms(request_data):
+# Returns all Room entities in the datastore
+def get_rooms():
 	rooms = Room.query().fetch()
-	print rooms
+
+	#  If there is more than one room, then @rooms will be a list 
+	if len(rooms) > 1:
+		rooms = [r.to_dict() for r in rooms]
+	else:
+		rooms = rooms.to_dict()
+	return rooms
 
 # What data is coming in to change? Will the request data have
 # all fields that should be on a room or just the ones its gonna update
 def update_room(request_data, room_key):
 	room_to_update = Room.get_by_id(room_key)
-	room_to_update.
 
