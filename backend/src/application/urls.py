@@ -36,11 +36,16 @@ tasks = [
 def root():
     return app.send_static_file('index.html')
 
-@app.route('/todo', methods = ['GET'])
-def get_tasks():
-    return jsonify( { 'tasks': tasks } )
-
-@app.route('/api/room', methods = ['POST'])
+@app.route('/api/add/room', methods = ['POST'])
 def add_room():
     new_room = handlers.add_room(request.get_json())
     return jsonify( { 'room': new_room } )
+
+# Return a 200?
+@app.route('/api/rooms/', methods = ['GET'])
+def get_rooms():
+    rooms = handlers.get_rooms(request.get_json())
+
+@app.route('/api/rooms/update/<room_key>', methods = ['POST'])
+def update_room():
+    handlers.update_room(request_data, room_key)
