@@ -1,24 +1,34 @@
 <div class="jumbotron">
-    <h3>Add a room</h3>
-    <form name="roomForm" ng-submit="addRoom(room)">
+    <div class="alert alert-success" ng-show="roomUpdated" role="alert">
+        Room successfully {{isEditing ? "updated" : "created"}}
+    </div>
+    <div class="alert alert-danger" ng-show="roomUpdatedError" role="alert">
+        Unable to {{isEditing ? "updated" : "created"}} room
+    </div>
+    <h3>{{isEditing ? "Edit" : "Add"}} A Room</h3>
+    <form name="roomForm" ng-submit="addOrUpdateRoom(room)">
         <div class="form-group">
             <label>Room Name</label>
             <input type="text" ng-model="room.name" class="form-control" placeholder="Enter name">
         </div>
         <div class="form-group">
-            <label>Room ID</label>
+            <label>Room Calendar ID</label>
             <input type="text" ng-model="room.calendar" class="form-control" placeholder="Enter room calendar">
         </div>
         <div class="form-group">
             <label>Room Capacity</label>
             <input type="text" ng-model="room.capacity" class="form-control" placeholder="Enter room capacity">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-success">{{isEditing ? "Update" : "Create"}}</button>
+        <button type="button" class="btn btn-danger" ng-click="clearInputs()">Clear</button>
     </form>
-    <h3>Rooms</h3>
-    <ul>
-        <li ng-repeat="room in rooms">
-            {{room.name}}
-        </li>
-    </ul>
+    <div ng-show="rooms.length > 0">
+        <h3>Rooms (click to edit)</h3>
+        <ul>
+            <li ng-repeat="room in rooms">
+                <a href="" ng-click="editRoom(room)">{{room.name}}</a>
+            </li>
+        </ul>
+    </div>
+
 </div>
