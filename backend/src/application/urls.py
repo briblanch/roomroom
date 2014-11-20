@@ -36,6 +36,6 @@ def get_rooms():
     return jsonify({'rooms': rooms})
 
 # Update a room's info
-@app.route('/api/rooms/update/<room_key>', methods = ['POST'])
+@app.route('/api/rooms/<room_key>', methods = ['PUT'])
 def update_room():
     handlers.update_room(request_data, room_key)

@@ -17,11 +17,12 @@ def add_room(request_data):
 def get_rooms():
 	rooms = Room.query().fetch()
 
-	#  If there is more than one room, then @rooms will be a list 
-	if len(rooms) > 1:
-		rooms = [r.to_dict() for r in rooms]
+	print "LENGTH ", len(rooms)
+	#  If there is more than one room, then @rooms will be a list
+	if len(rooms) == 0:
+	 	pass
 	else:
-		rooms = rooms.to_dict()
+		rooms = [r.to_dict() for r in rooms]
 	return rooms
 
 # What data is coming in to change? Will the request data have

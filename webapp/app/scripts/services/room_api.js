@@ -10,7 +10,7 @@
 angular.module('capstone')
     .factory('RoomApi', function($http, $q) {
         var addRoomUrl = 'api/room';
-        var getRoomsUrl = 'api/rooms'
+        var getRoomsUrl = 'api/rooms';
         // Public API here
         return {
             addRoom : function(room) {
@@ -27,7 +27,7 @@ angular.module('capstone')
 
                 $http.get(getRoomsUrl).then(function(result) {
                     deferred.resolve(result.data);
-                })
+                });
 
                 return deferred.promise;
             }
