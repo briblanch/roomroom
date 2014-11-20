@@ -1,4 +1,10 @@
 <div class="jumbotron">
+    <div class="alert alert-success" ng-show="roomUpdated" role="alert">
+        Room successfully {{isEditing ? "updated" : "created"}}
+    </div>
+    <div class="alert alert-danger" ng-show="roomUpdatedError" role="alert">
+        Unable to {{isEditing ? "updated" : "created"}} room
+    </div>
     <h3>{{isEditing ? "Edit" : "Add"}} A Room</h3>
     <form name="roomForm" ng-submit="addOrUpdateRoom(room)">
         <div class="form-group">
