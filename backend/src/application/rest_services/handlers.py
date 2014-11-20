@@ -20,11 +20,9 @@ def get_rooms():
 	print "LENGTH ", len(rooms)
 	# If there is more than one room, then @rooms will be a list
 	# otherwise, its a single object 
-	if len(rooms) == 1:
-	 	room_key = rooms.key
-	 	rooms = rooms.to_dict()
-	 	rooms['id'] = str(room_key.id())
-	elif len(rooms) > 1:
+	if len(rooms) == 0:
+		pass
+	else:
 		room_keys = [r.key for r in rooms]
 		rooms = [r.to_dict() for r in rooms]
 		for room, key in zip(rooms, room_keys):
