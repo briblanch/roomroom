@@ -10,28 +10,25 @@ import UIKit
 
 class RoomDetailViewController: UIViewController {
     var room: Room!
+
     @IBOutlet weak var roomTitle: UINavigationItem!
+    @IBOutlet weak var roomName: UILabel!
+    @IBOutlet weak var roomID: UILabel!
+    @IBOutlet weak var roomCalendar: UILabel!
+    @IBOutlet weak var roomCapacity: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.displayRoomInfo()
+    }
+
+    func displayRoomInfo() {
         self.roomTitle.title = room.name
+
+        self.roomName.text = "Name: " + room.name
+        self.roomID.text = "ID: " + room.id
+        self.roomCalendar.text = "Calendar: " + room.calendar
+        self.roomCapacity.text = "Capacity: " + String(room.capacity)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
