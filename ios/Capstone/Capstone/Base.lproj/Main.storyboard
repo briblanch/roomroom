@@ -57,7 +57,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="7B9-xQ-mud" kind="show" identifier="roomDetailSegue" id="CC8-Vc-BxT"/>
+                        <segue destination="jL4-d2-lbx" kind="show" identifier="roomEventSegue" id="tQZ-GG-4uj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bWK-lx-y3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -65,56 +65,34 @@
             <point key="canvasLocation" x="477" y="435"/>
         </scene>
         <!--Room Title-->
-        <scene sceneID="D10-FK-p9o">
+        <scene sceneID="JdA-oH-fiW">
             <objects>
-                <viewController id="7B9-xQ-mud" customClass="RoomDetailViewController" customModule="Capstone" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="N4T-rw-5Lr"/>
-                        <viewControllerLayoutGuide type="bottom" id="P8u-BV-JjJ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="WXH-KE-EVV">
+                <tableViewController id="jL4-d2-lbx" customClass="EventTableViewController" customModule="Capstone" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="tNT-W3-1Wa">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOv-BY-zTa">
-                                <rect key="frame" x="29" y="88" width="398" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ID: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cvn-7E-x5d">
-                                <rect key="frame" x="29" y="117" width="398" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Capacity: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TvC-z6-Ka0">
-                                <rect key="frame" x="29" y="175" width="398" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Calendar" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IyQ-Go-auR">
-                                <rect key="frame" x="29" y="146" width="398" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Room Title" id="hR3-qS-TAr"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="eventCell" id="ZZz-Pc-LmW" customClass="EventTableViewCell" customModule="Capstone" customModuleProvider="target">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZZz-Pc-LmW" id="jtB-ta-UrT">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="jL4-d2-lbx" id="yWZ-oA-yoI"/>
+                            <outlet property="delegate" destination="jL4-d2-lbx" id="Tod-3J-9IJ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Room Title" id="fDn-qj-qhI"/>
                     <connections>
-                        <outlet property="roomCalendar" destination="IyQ-Go-auR" id="HRe-MF-qwy"/>
-                        <outlet property="roomCapacity" destination="TvC-z6-Ka0" id="7vR-Ek-S1b"/>
-                        <outlet property="roomID" destination="Cvn-7E-x5d" id="lH9-BS-T4F"/>
-                        <outlet property="roomName" destination="NOv-BY-zTa" id="eck-QK-sYx"/>
-                        <outlet property="roomTitle" destination="hR3-qS-TAr" id="ESb-KY-2BL"/>
+                        <outlet property="roomTitleLabel" destination="fDn-qj-qhI" id="V88-cK-yvI"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1rI-69-mbl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mxo-TS-Bvb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1301" y="435"/>
+            <point key="canvasLocation" x="1255" y="435"/>
         </scene>
     </scenes>
 </document>

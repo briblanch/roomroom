@@ -39,7 +39,7 @@ class RoomTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.performSegueWithIdentifier("roomDetailSegue", sender: self)
+        self.performSegueWithIdentifier("roomEventSegue", sender: self)
     }
 
     @IBAction func refreshButtonWasPresssed(sender: AnyObject) {
@@ -62,7 +62,7 @@ class RoomTableViewController: UITableViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destinationVc = segue.destinationViewController as RoomDetailViewController
+        let destinationVc = segue.destinationViewController as EventTableViewController
         let index = self.tableView.indexPathForSelectedRow()
         
         destinationVc.room = self.rooms[index!.row]
