@@ -74,7 +74,7 @@ public class MyActivity extends Activity {
             TableRow tableRow;
             TextView textView;
 
-            for(int i = 0; i < 3; i++) {
+            for(int i = 0; i < 30; i++) {
                 tableRow = new TableRow(mContext);
                 tableRow.setClickable(true);
                 tableRow.setOnClickListener(new View.OnClickListener() {

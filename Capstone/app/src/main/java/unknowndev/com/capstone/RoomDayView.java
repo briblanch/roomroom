@@ -31,7 +31,7 @@ public class RoomDayView extends ListActivity {
                 this,
                 list,
                 R.layout.custom_row_view,
-                new String[] {"pen","price","color"},
+                new String[] {"event","time","creator"},
                 new int[] {R.id.text1,R.id.text2, R.id.text3}
         );
 
@@ -71,29 +71,33 @@ public class RoomDayView extends ListActivity {
 
     private void populateList() {
         HashMap<String,String> temp = new HashMap<String,String>();
-        temp.put("pen","MONT Blanc");
-        temp.put("price", "200.00$");
-        temp.put("color", "Silver, Grey, Black");
+        temp.put("event","QA Meeting");
+        temp.put("time", "11:00am-11:30am");
+        temp.put("creator", "Mike Robbins");
         list.add(temp);
+
         HashMap<String,String> temp1 = new HashMap<String,String>();
-        temp1.put("pen","Gucci");
-        temp1.put("price", "300.00$");
-        temp1.put("color", "Gold, Red");
+        temp1.put("event","Dev show and tell");
+        temp1.put("time", "12:00pm-1:30pm");
+        temp1.put("creator", "Brent Arndorfer");
         list.add(temp1);
+
         HashMap<String,String> temp2 = new HashMap<String,String>();
-        temp2.put("pen","Parker");
-        temp2.put("price", "400.00$");
-        temp2.put("color", "Gold, Blue");
+        temp2.put("event","Test Blitz");
+        temp2.put("time", "3:00pm-5:00pm,");
+        temp2.put("creator", "Robert Harwell");
         list.add(temp2);
+
         HashMap<String,String> temp3 = new HashMap<String,String>();
-        temp3.put("pen","Sailor");
-        temp3.put("price", "500.00$");
-        temp3.put("color", "Silver");
+        temp3.put("event","Pythonista Meeting");
+        temp3.put("time", "5:15pm-5:30pm");
+        temp3.put("creator", "Shawn Rusaw");
         list.add(temp3);
+
         HashMap<String,String> temp4 = new HashMap<String,String>();
-        temp4.put("pen","Porsche Design");
-        temp4.put("price", "600.00$");
-        temp4.put("color", "Silver, Grey, Red");
+        temp4.put("event","Date Night");
+        temp4.put("time", "6:00pm-7:30pm");
+        temp4.put("creator", "Derrick Ruhbar");
         list.add(temp4);
     }
 
