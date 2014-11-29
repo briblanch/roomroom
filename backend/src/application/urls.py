@@ -40,3 +40,9 @@ def get_rooms():
 def update_room(room_key):
     updated_room = handlers.update_room(request.get_json(), room_key)
     return jsonify({'room': updated_room})
+
+# Returns all events for a given calendar
+@app.route('/api/rooms/events/<room_key>', methods = ['GET'])
+def get_room_events(room_key):
+    events = handlers.get_room_events(request.get_json(), room_key)
+    return jsonify({'events': events})
