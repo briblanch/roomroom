@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,10 +17,25 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class HomeActivity extends Activity {
 
     public final static String ROOM_TITLE = "unknowndev.com.capstone.ROOMTITLE";
+
+    private static JSONArray mRoomArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +74,8 @@ public class HomeActivity extends Activity {
     public static class PlaceholderFragment extends Fragment {
         public Context mContext;
 
+        private static final String baseURL = "http://asu-capstone.appspot.com/api/rooms";
+
         public PlaceholderFragment() {
         }
 
@@ -66,6 +84,9 @@ public class HomeActivity extends Activity {
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+            // get data from server
+            getData();
+
             // table creation
             mContext = getActivity().getApplicationContext();
             TableLayout tableLayout = (TableLayout) rootView.findViewById(R.id.room_table);
@@ -73,7 +94,7 @@ public class HomeActivity extends Activity {
             TableRow tableRow;
             TextView textView;
 
-            for(int i = 0; i < 30; i++) {
+            for(int i = 0; i < mRoomArray.length(); i++) {
                 tableRow = new TableRow(mContext);
                 tableRow.setClickable(true);
                 tableRow.setOnClickListener(new View.OnClickListener() {
@@ -90,10 +111,26 @@ public class HomeActivity extends Activity {
                     textView.setTextColor(Color.BLACK);
                     textView.setId(j);
 
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append(i).append(" ").append(j);
+                    switch(j) {
+                        case 0:
+                            try {
+                                textView.setText(mRoomArray.getJSONObject(i).getString("name"));
+                            } catch(JSONException e) {
 
-                    textView.setText(stringBuilder.toString());
+                            }
+                            break;
+                        case 1:
+                            try {
+                                textView.setText(mRoomArray.getJSONObject(i).getString("capacity"));
+                            } catch(JSONException e) {
+
+                            }
+                            break;
+                        case 2:
+                            textView.setText("Yes");
+                            break;
+                    }
+
                     textView.setGravity(Gravity.CENTER);
                     textView.setPadding(20, 20, 20, 20);
                     tableRow.addView(textView);
@@ -102,6 +139,49 @@ public class HomeActivity extends Activity {
             }
 
             return rootView;
+        }
+
+        private void getData() {
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.
+                        ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                URL url = new URL(baseURL);
+                HttpURLConnection con = (HttpURLConnection) url
+                        .openConnection();
+                readStream(con.getInputStream());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void readStream(InputStream in) {
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new InputStreamReader(in));
+                String jsonString = "";
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    jsonString += line;
+                }
+
+                List<String> list = new ArrayList<String>();
+                JSONObject jsonObject = new JSONObject(jsonString);
+                mRoomArray = jsonObject.getJSONArray("rooms");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 }
