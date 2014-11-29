@@ -45,11 +45,11 @@ public class RoomDayView extends ListActivity {
 
         setListAdapter(adapter);
 
-//        if (savedInstanceState == null) {
-//            getFragmentManager().beginTransaction()
-//                    .add(R.id.container, new PlaceholderFragment())
-//                    .commit();
-//        }
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new PlaceholderFragment())
+                    .commit();
+        }
     }
 
 
@@ -90,7 +90,7 @@ public class RoomDayView extends ListActivity {
 
         HashMap<String,String> temp2 = new HashMap<String,String>();
         temp2.put("event","Test Blitz");
-        temp2.put("time", "3:00pm-5:00pm,");
+        temp2.put("time", "3:00pm-5:00pm");
         temp2.put("creator", "Robert Harwell");
         list.add(temp2);
 

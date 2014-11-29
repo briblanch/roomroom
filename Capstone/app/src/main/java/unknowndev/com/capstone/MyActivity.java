@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 public class MyActivity extends Activity {
 
-    public final static String ROOM_TITLE = "com.example.myfirstapp.MESSAGE";
+    public final static String ROOM_TITLE = "unknowndev.com.capstone.ROOMTITLE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +82,8 @@ public class MyActivity extends Activity {
                 tableRow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // YOLO
-//                        System.out.println("POOP\n");
                         Intent intent = new Intent(getActivity(), RoomDayView.class);
                         TextView roomTitle = (TextView) v.findViewById(0);
-//                        System.out.println(roomTitle.getText());
                         intent.putExtra(ROOM_TITLE, roomTitle.getText());
                         startActivity(intent);
                     }
