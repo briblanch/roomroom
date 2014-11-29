@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -81,6 +82,8 @@ public class MyActivity extends Activity {
                     public void onClick(View v) {
                         // YOLO
                         System.out.println("POOP\n");
+                        Intent intent = new Intent(getActivity(), RoomDayView.class);
+                        startActivity(intent);
                     }
                 });
                 for(int j = 0; j < 3; j++) {
