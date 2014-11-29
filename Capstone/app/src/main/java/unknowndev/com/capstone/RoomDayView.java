@@ -29,7 +29,7 @@ public class RoomDayView extends ListActivity {
         setContentView(R.layout.activity_room_day_view);
 
         Intent intent = getIntent();
-        String roomTitle = intent.getStringExtra(MyActivity.ROOM_TITLE);
+        String roomTitle = intent.getStringExtra(HomeActivity.ROOM_TITLE);
         setTitle(roomTitle);
 
         SimpleAdapter adapter = new SimpleAdapter(
