@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 public class MyActivity extends Activity {
 
+    public final static String ROOM_TITLE = "com.example.myfirstapp.MESSAGE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,14 +83,18 @@ public class MyActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         // YOLO
-                        System.out.println("POOP\n");
+//                        System.out.println("POOP\n");
                         Intent intent = new Intent(getActivity(), RoomDayView.class);
+                        TextView roomTitle = (TextView) v.findViewById(0);
+//                        System.out.println(roomTitle.getText());
+                        intent.putExtra(ROOM_TITLE, roomTitle.getText());
                         startActivity(intent);
                     }
                 });
                 for(int j = 0; j < 3; j++) {
                     textView = new TextView(mContext);
                     textView.setTextColor(Color.BLACK);
+                    textView.setId(j);
 
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append(i).append(" ").append(j);

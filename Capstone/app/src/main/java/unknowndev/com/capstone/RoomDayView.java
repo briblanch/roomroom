@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +28,10 @@ public class RoomDayView extends ListActivity {
 
         setContentView(R.layout.activity_room_day_view);
 
+        Intent intent = getIntent();
+        String roomTitle = intent.getStringExtra(MyActivity.ROOM_TITLE);
+        setTitle(roomTitle);
+
         SimpleAdapter adapter = new SimpleAdapter(
                 this,
                 list,
@@ -35,6 +40,7 @@ public class RoomDayView extends ListActivity {
                 new int[] {R.id.text1,R.id.text2, R.id.text3}
         );
 
+        list.clear();
         populateList();
 
         setListAdapter(adapter);
