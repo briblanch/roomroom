@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -76,20 +78,49 @@ public class HomeActivity extends Activity {
 
         private static final String baseURL = "http://asu-capstone.appspot.com/api/rooms";
 
+        // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
+        private SwipeRefreshLayout mSwipeRefreshLayout;
+
         public PlaceholderFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+            final View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+            // swipe to refresh
+            mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+            mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                    android.R.color.holo_green_light,
+                    android.R.color.holo_orange_light,
+                    android.R.color.holo_red_light);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            requestDataRefresh(rootView);
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }, 5000);
+                }
+            });
 
             // get data from server
             getData();
 
+            populateRoomTable(mRoomArray, rootView);
+
+            return rootView;
+        }
+
+        private void populateRoomTable(JSONArray roomArray, View rootView) {
             // table creation
             mContext = getActivity().getApplicationContext();
             TableLayout tableLayout = (TableLayout) rootView.findViewById(R.id.room_table);
+            tableLayout.removeAllViewsInLayout();
 
             TableRow tableRow;
             TextView textView;
@@ -137,8 +168,11 @@ public class HomeActivity extends Activity {
                 }
                 tableLayout.addView(tableRow);
             }
+        }
 
-            return rootView;
+        private void requestDataRefresh(View rootView) {
+            getData();
+            populateRoomTable(mRoomArray, rootView);
         }
 
         private void getData() {
