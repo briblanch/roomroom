@@ -66,6 +66,7 @@ class RoomTableViewController: UITableViewController {
         let index = self.tableView.indexPathForSelectedRow()
         
         destinationVc.room = self.rooms[index!.row]
+        destinationVc.date = NSDate()
     }
 
 }

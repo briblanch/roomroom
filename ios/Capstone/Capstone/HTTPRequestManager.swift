@@ -13,7 +13,7 @@ typealias completionHandler = (AnyObject?, NSError?) -> Void
 
 class HTTPRequestManager: NSObject {
 
-    var baseURL: String? = "http://localhost:8080/"
+    var baseURL: String? = "http://asu-capstone.appspot.com"
 
     class var sharedInstance : HTTPRequestManager {
         struct Static {
@@ -39,12 +39,14 @@ class HTTPRequestManager: NSObject {
     }
 
     func GET(URL: String, paramaters: [String: AnyObject]?, completion: completionHandler?) {
-        Alamofire.request(.GET, requestURL(URL)!, parameters: paramaters)
-                 .responseJSON { (_, _, JSON, error) in
-                        if (completion != nil) {
-                            completion!(JSON, error)
-                        }
-                 }
+        if let requestURL = self.requestURL(URL) {
+            Alamofire.request(.GET, requestURL, parameters: paramaters)
+                .responseJSON { (_, _, JSON, error) in
+                    if (completion != nil) {
+                        completion!(JSON, error)
+                    }
+            }
+        }
     }
 
     private func requestURL(URL: String) -> String? {

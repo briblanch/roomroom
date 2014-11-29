@@ -7,13 +7,21 @@ import UIKit
 
 class EventTableViewController: UITableViewController {
 
-    @IBOutlet weak var roomTitleLabel: UINavigationItem!    
+    @IBOutlet weak var roomTitleLabel: UINavigationItem!
+
+    var date: NSDate? {
+        didSet {
+            // Make a call to get events for the given date
+        }
+    }
 
     var room: Room? {
         didSet {
             self.roomTitleLabel.title = self.room!.name
         }
     }
+
+    var events = [Event]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,5 +48,11 @@ class EventTableViewController: UITableViewController {
         cell.event = Event()
 
         return cell
+    }
+
+    func formatDateForRequest(date: NSDate) -> String {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
+        return formatter.stringFromDate(date);
     }
 }
