@@ -9,5 +9,26 @@
 import UIKit
 
 class Event: NSObject {
-   
+    var summary: String
+    var start: NSDate
+    var end: NSDate
+
+    init(summary: String, start: NSDate, end: NSDate) {
+        self.summary = summary
+        self.start = start
+        self.end = end
+    }
+
+    class func parseDateString(dateString: String) -> NSDate? {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
+        dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        return dateFormatter.dateFromString(dateString)
+    }
+
+    class func eventStringForRequest(date: NSDate) -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
+        return dateFormatter.stringFromDate(date)
+    }
 }

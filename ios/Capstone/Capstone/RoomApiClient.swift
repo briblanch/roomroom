@@ -9,6 +9,7 @@
 import Foundation
 
 typealias roomListCompletion = ([Room]?, NSError?) -> Void
+typealias eventListCompletion = ([Event]?, NSError?) -> Void
 
 class RoomApiClient: NSObject {
     func getRooms(completion: roomListCompletion) {
@@ -26,6 +27,32 @@ class RoomApiClient: NSObject {
                 }
                 
                 completion(rooms, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+
+    func getEvents(forRoom room: Room, forDate date: NSDate, completion: eventListCompletion) {
+        let URL = "/api/rooms/events/" + room.id
+        let requestDate = Event.eventStringForRequest(date)
+
+        HTTPRequestManager.sharedInstance.GET(URL, paramaters: ["date" : requestDate]) { (responseObject, error) in
+            var events = [Event]()
+
+            if let responseDict = responseObject as? Dictionary<String, AnyObject> {
+                for event in responseDict["events"] as Array<Dictionary<String, AnyObject>> {
+                    let start = event["start"] as Dictionary<String, AnyObject>
+                    let end = event["end"] as Dictionary<String, AnyObject>
+
+                    let summary = event["summary"] as String
+                    let startDate = Event.parseDateString(start["dateTime"] as String)
+                    let endDate = Event.parseDateString(end["dateTime"] as String)
+
+                    events.append(Event(summary: summary, start: startDate!, end: endDate!))
+                }
+
+                completion(events, nil)
             } else {
                 completion(nil, error)
             }

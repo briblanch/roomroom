@@ -8,10 +8,14 @@ import UIKit
 class EventTableViewController: UITableViewController {
 
     @IBOutlet weak var roomTitleLabel: UINavigationItem!
+    @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var dateButton: UIBarButtonItem!
+
+    lazy var roomApi = RoomApiClient()
 
     var date: NSDate? {
         didSet {
-            // Make a call to get events for the given date
+            self.dateButton.title = displayDateText(self.date!)
         }
     }
 
@@ -21,13 +25,22 @@ class EventTableViewController: UITableViewController {
         }
     }
 
-    var events = [Event]()
+    var events: [Event] = [Event]() {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.registerNib(UINib(nibName: "EventTableViewCell", bundle: nil), forCellReuseIdentifier: "eventCell")
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.rowHeight = eventTableCellHeight
+
+        self.datePicker.datePickerMode = UIDatePickerMode.Date
+        self.datePicker.hidden = true
+
+        self.getEvents()
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,20 +52,41 @@ class EventTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 2
+        return events.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("eventCell", forIndexPath: indexPath) as EventTableViewCell
 
-        cell.event = Event()
+        cell.event = events[indexPath.row]
 
         return cell
     }
 
-    func formatDateForRequest(date: NSDate) -> String {
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
-        return formatter.stringFromDate(date);
+    func getEvents() {
+        roomApi.getEvents(forRoom: self.room!, forDate: self.date!) { (events, error) in
+            if (events != nil && error == nil) {
+                self.events = events!
+            } else {
+                // error
+            }
+        }
+    }
+
+    @IBAction func dateWasSelected(sender: UIDatePicker) {
+        self.date = sender.date
+        self.getEvents()
+        self.datePicker.hidden = true
+    }
+
+    @IBAction func dateButtonWasPressed(sender: AnyObject) {
+        self.datePicker.hidden = false
+    }
+
+    func displayDateText(date: NSDate) -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MMM d, YYYY"
+        dateFormatter.timeZone = NSTimeZone.systemTimeZone()
+        return dateFormatter.stringFromDate(date)
     }
 }

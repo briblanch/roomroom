@@ -64,9 +64,9 @@ class RoomTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destinationVc = segue.destinationViewController as EventTableViewController
         let index = self.tableView.indexPathForSelectedRow()
-        
-        destinationVc.room = self.rooms[index!.row]
+
         destinationVc.date = NSDate()
+        destinationVc.room = self.rooms[index!.row]
     }
 
 }
