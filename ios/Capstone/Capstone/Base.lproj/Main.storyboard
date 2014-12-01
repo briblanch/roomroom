@@ -64,7 +64,7 @@
             </objects>
             <point key="canvasLocation" x="476" y="435"/>
         </scene>
-        <!--Title-->
+        <!--Events-->
         <scene sceneID="JdA-oH-fiW">
             <objects>
                 <tableViewController id="jL4-d2-lbx" customClass="EventTableViewController" customModule="Capstone" customModuleProvider="target" sceneMemberID="viewController">
@@ -96,7 +96,7 @@
                             <outlet property="delegate" destination="jL4-d2-lbx" id="Tod-3J-9IJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="tSy-Q0-tYg">
+                    <navigationItem key="navigationItem" title="Events" id="tSy-Q0-tYg">
                         <barButtonItem key="rightBarButtonItem" title="Date" id="epS-JR-g1u">
                             <connections>
                                 <action selector="dateButtonWasPressed:" destination="jL4-d2-lbx" id="eGG-DW-EfE"/>

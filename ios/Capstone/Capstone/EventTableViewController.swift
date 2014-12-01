@@ -25,11 +25,7 @@ class EventTableViewController: UITableViewController {
         }
     }
 
-    var events: [Event] = [Event]() {
-        didSet {
-            self.tableView.reloadData()
-        }
-    }
+    var events = [Event]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +35,14 @@ class EventTableViewController: UITableViewController {
 
         self.datePicker.datePickerMode = UIDatePickerMode.Date
         self.datePicker.hidden = true
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "dateHasChanged:",
+            name: UIApplicationSignificantTimeChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appResumed",
+            name: UIApplicationDidBecomeActiveNotification, object: nil)
+
+        // 5 miuntes
+        NSTimer.scheduledTimerWithTimeInterval(60*5, target: self, selector: "getEvents", userInfo: nil, repeats: true)
 
         self.getEvents()
     }
@@ -67,20 +71,24 @@ class EventTableViewController: UITableViewController {
         roomApi.getEvents(forRoom: self.room!, forDate: self.date!) { (events, error) in
             if (events != nil && error == nil) {
                 self.events = events!
+                self.events.sort {(e1, e2) -> Bool in
+                    return e1.start.earlierDate(e2.start) == e1.start
+                }
             } else {
                 // error
             }
+
+            self.tableView.reloadData()
         }
     }
 
     @IBAction func dateWasSelected(sender: UIDatePicker) {
         self.date = sender.date
         self.getEvents()
-        self.datePicker.hidden = true
     }
 
     @IBAction func dateButtonWasPressed(sender: AnyObject) {
-        self.datePicker.hidden = false
+        self.datePicker.hidden = !self.datePicker.hidden
     }
 
     func displayDateText(date: NSDate) -> String {
@@ -88,5 +96,21 @@ class EventTableViewController: UITableViewController {
         dateFormatter.dateFormat = "MMM d, YYYY"
         dateFormatter.timeZone = NSTimeZone.systemTimeZone()
         return dateFormatter.stringFromDate(date)
+    }
+
+    func dateHasChanged(notifcation: NSNotification) {
+        self.date = NSDate()
+        self.datePicker.date = self.date!
+        self.getEvents()
+    }
+
+    func appResumed() {
+        self.date = NSDate()
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter()
+            .removeObserver(self, name: UIApplicationSignificantTimeChangeNotification,
+                                                            object: nil)
     }
 }

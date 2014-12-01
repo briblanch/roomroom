@@ -30,7 +30,7 @@ class EventTableViewCell: UITableViewCell {
 
     func displayTimeForDate(date: NSDate) -> String {
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "h:mm"
+        dateFormatter.dateFormat = "h:mm a"
         dateFormatter.timeZone = NSTimeZone.systemTimeZone()
         return dateFormatter.stringFromDate(date)
     }

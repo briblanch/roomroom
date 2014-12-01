@@ -12,11 +12,13 @@ class Event: NSObject {
     var summary: String
     var start: NSDate
     var end: NSDate
+    var creator: String
 
-    init(summary: String, start: NSDate, end: NSDate) {
+    init(summary: String, start: NSDate, end: NSDate, creator: String) {
         self.summary = summary
         self.start = start
         self.end = end
+        self.creator = creator
     }
 
     class func parseDateString(dateString: String) -> NSDate? {

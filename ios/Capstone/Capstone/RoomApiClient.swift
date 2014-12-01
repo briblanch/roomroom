@@ -44,12 +44,14 @@ class RoomApiClient: NSObject {
                 for event in responseDict["events"] as Array<Dictionary<String, AnyObject>> {
                     let start = event["start"] as Dictionary<String, AnyObject>
                     let end = event["end"] as Dictionary<String, AnyObject>
+                    let organizer = event["organizer"] as Dictionary<String, AnyObject>
 
                     let summary = event["summary"] as String
+                    let creator = organizer["displayName"] as String
                     let startDate = Event.parseDateString(start["dateTime"] as String)
                     let endDate = Event.parseDateString(end["dateTime"] as String)
 
-                    events.append(Event(summary: summary, start: startDate!, end: endDate!))
+                    events.append(Event(summary: summary, start: startDate!, end: endDate!, creator: creator))
                 }
 
                 completion(events, nil)

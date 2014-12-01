@@ -13,7 +13,7 @@ typealias completionHandler = (AnyObject?, NSError?) -> Void
 
 class HTTPRequestManager: NSObject {
 
-    var baseURL: String? = "http://localhost:8080"
+    var baseURL: String? = "http://asu-capstone.appspot.com"
 
     class var sharedInstance : HTTPRequestManager {
         struct Static {
