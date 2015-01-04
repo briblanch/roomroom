@@ -35,6 +35,7 @@ class EventTableViewController: UITableViewController {
 
         self.datePicker.datePickerMode = UIDatePickerMode.Date
         self.datePicker.hidden = true
+        self.datePicker.date = self.date!
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "dateHasChanged:",
             name: UIApplicationSignificantTimeChangeNotification, object: nil)
@@ -42,7 +43,7 @@ class EventTableViewController: UITableViewController {
             name: UIApplicationDidBecomeActiveNotification, object: nil)
 
         // 5 miuntes
-        NSTimer.scheduledTimerWithTimeInterval(60*5, target: self, selector: "getEvents", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "getEvents", userInfo: nil, repeats: true)
 
         self.getEvents()
     }
@@ -106,6 +107,7 @@ class EventTableViewController: UITableViewController {
 
     func appResumed() {
         self.date = NSDate()
+        self.getEvents()
     }
 
     deinit {

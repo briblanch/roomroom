@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 unknowndev. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Alamofire
 
 typealias completionHandler = (AnyObject?, NSError?) -> Void
@@ -15,10 +15,10 @@ class HTTPRequestManager: NSObject {
 
     var baseURL: String? = "http://asu-capstone.appspot.com"
 
-    class var sharedInstance : HTTPRequestManager {
+    class var sharedInstance: HTTPRequestManager {
         struct Static {
-            static var onceToken : dispatch_once_t = 0
-            static var instance : HTTPRequestManager? = nil
+            static var onceToken: dispatch_once_t = 0
+            static var instance: HTTPRequestManager? = nil
         }
 
         dispatch_once(&Static.onceToken) {
