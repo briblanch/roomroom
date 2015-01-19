@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,13 +15,40 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.SimpleAdapter;
 
+import com.goebl.david.Webb;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class RoomDayView extends ListActivity {
 
     static final ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+
+    private static final String baseURL = "http://asu-capstone.appspot.com/api/rooms/events/";
+
+    private static JSONArray mEventArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +64,12 @@ public class RoomDayView extends ListActivity {
                 this,
                 list,
                 R.layout.custom_row_view,
-                new String[] {"event","time","creator"},
-                new int[] {R.id.text1,R.id.text2, R.id.text3}
+                new String[] {"event", "startTime", "endTime", "creator"},
+                new int[] {R.id.text1,R.id.text2, R.id.text3, R.id.text4}
         );
 
         list.clear();
-        populateList();
+        getData(intent.getStringExtra(HomeActivity.ROOM_ID));
 
         setListAdapter(adapter);
 
@@ -74,37 +102,117 @@ public class RoomDayView extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void populateList() {
-        HashMap<String,String> temp = new HashMap<String,String>();
-        temp.put("event","QA Meeting");
-        temp.put("time", "11:00am-11:30am");
-        temp.put("creator", "Mike Robbins");
-        list.add(temp);
+//    private void populateList(String roomId) {
+//
+//        System.out.println("ROOM ID" + roomId);
+//        HashMap<String,String> temp = new HashMap<String,String>();
+//        temp.put("event","QA Meeting");
+//        temp.put("time", "11:00am-11:30am");
+//        temp.put("creator", "Mike Robbins");
+//        list.add(temp);
+//
+//        HashMap<String,String> temp1 = new HashMap<String,String>();
+//        temp1.put("event","Dev show and tell");
+//        temp1.put("time", "12:00pm-1:30pm");
+//        temp1.put("creator", "Brent Arndorfer");
+//        list.add(temp1);
+//
+//        HashMap<String,String> temp2 = new HashMap<String,String>();
+//        temp2.put("event","Test Blitz");
+//        temp2.put("time", "3:00pm-5:00pm");
+//        temp2.put("creator", "Robert Harwell");
+//        list.add(temp2);
+//
+//        HashMap<String,String> temp3 = new HashMap<String,String>();
+//        temp3.put("event","Pythonista Meeting");
+//        temp3.put("time", "5:15pm-5:30pm");
+//        temp3.put("creator", "Shawn Rusaw");
+//        list.add(temp3);
+//
+//        HashMap<String,String> temp4 = new HashMap<String,String>();
+//        temp4.put("event","Date Night");
+//        temp4.put("time", "6:00pm-7:30pm");
+//        temp4.put("creator", "Derrick Ruhbar");
+//        list.add(temp4);
+//    }
 
-        HashMap<String,String> temp1 = new HashMap<String,String>();
-        temp1.put("event","Dev show and tell");
-        temp1.put("time", "12:00pm-1:30pm");
-        temp1.put("creator", "Brent Arndorfer");
-        list.add(temp1);
+    private void getData(String roomId) {
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.
+                    ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
 
-        HashMap<String,String> temp2 = new HashMap<String,String>();
-        temp2.put("event","Test Blitz");
-        temp2.put("time", "3:00pm-5:00pm");
-        temp2.put("creator", "Robert Harwell");
-        list.add(temp2);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssssZ");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        HashMap<String,String> temp3 = new HashMap<String,String>();
-        temp3.put("event","Pythonista Meeting");
-        temp3.put("time", "5:15pm-5:30pm");
-        temp3.put("creator", "Shawn Rusaw");
-        list.add(temp3);
+            Webb webb = Webb.create();
+            JSONObject result = webb
+                    .get(baseURL + roomId)
+                    .param("date", simpleDateFormat.format(new Date()))
+                    .ensureSuccess()
+                    .asJsonObject()
+                    .getBody();
+            System.out.println(result.toString());
 
-        HashMap<String,String> temp4 = new HashMap<String,String>();
-        temp4.put("event","Date Night");
-        temp4.put("time", "6:00pm-7:30pm");
-        temp4.put("creator", "Derrick Ruhbar");
-        list.add(temp4);
+            mEventArray = result.getJSONArray("events");
+
+            for(int i = 0; i < mEventArray.length(); i++) {
+                HashMap<String,String> temp = new HashMap<String,String>();
+                temp.put("event", mEventArray.getJSONObject(i).getString("summary"));
+                String startTime = timeBuilder(mEventArray.getJSONObject(i).getJSONObject("start")
+                        .getString("dateTime"));
+
+                temp.put("startTime", startTime);
+
+                String endTime = timeBuilder(mEventArray.getJSONObject(i).getJSONObject("end")
+                        .getString("dateTime"));
+                temp.put("endTime", endTime);
+                temp.put("creator", mEventArray.getJSONObject(i).getJSONObject("creator")
+                        .getString("displayName"));
+                temp.put("time", "5:00pm");
+                list.add(temp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    private String timeBuilder(String dateString) {
+        try {
+            Date startTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssssZ").parse(dateString);
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("US/Arizona"));
+            calendar.setTime(startTime);
+
+            String amPm;
+            if(calendar.get(Calendar.AM_PM) == 0) {
+                amPm = "am";
+            } else {
+                amPm = "pm";
+            }
+
+            int hour = calendar.get(Calendar.HOUR);
+
+            if(hour == 0) {
+                hour = 12;
+            }
+
+
+            int minute = calendar.get(Calendar.MINUTE);
+            String minuteString = "" + minute;
+
+            if(minute == 0) {
+                minuteString = "00";
+            }
+
+            return hour + ":" + minuteString + amPm;
+        } catch(ParseException e) {
+
+        }
+
+        return "";
+    }
+
+
 
     /**
      * A placeholder fragment containing a simple view.

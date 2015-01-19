@@ -36,6 +36,7 @@ import java.util.List;
 public class HomeActivity extends Activity {
 
     public final static String ROOM_TITLE = "unknowndev.com.capstone.ROOMTITLE";
+    public final static String ROOM_ID = "unknowndev.com.capstone.ROOMID";
 
     private static JSONArray mRoomArray;
 
@@ -126,18 +127,21 @@ public class HomeActivity extends Activity {
             TextView textView;
 
             for(int i = 0; i < mRoomArray.length(); i++) {
+                System.out.println(mRoomArray.toString());
                 tableRow = new TableRow(mContext);
                 tableRow.setClickable(true);
                 tableRow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), RoomDayView.class);
-                        TextView roomTitle = (TextView) v.findViewById(0);
+                        TextView roomTitle = (TextView) ((TableRow) v).getChildAt(0);
                         intent.putExtra(ROOM_TITLE, roomTitle.getText());
+                        TextView roomId = (TextView) ((TableRow) v).getChildAt(3);
+                        intent.putExtra(ROOM_ID, roomId.getText());
                         startActivity(intent);
                     }
                 });
-                for(int j = 0; j < 3; j++) {
+                for(int j = 0; j < 4; j++) {
                     textView = new TextView(mContext);
                     textView.setTextColor(Color.BLACK);
                     textView.setId(j);
@@ -159,6 +163,14 @@ public class HomeActivity extends Activity {
                             break;
                         case 2:
                             textView.setText("Yes");
+                            break;
+                        case 3:
+                            textView.setVisibility(View.INVISIBLE);
+                            try {
+                                textView.setText(mRoomArray.getJSONObject(i).getString("id"));
+                            } catch(JSONException e) {
+
+                            }
                             break;
                     }
 
@@ -199,7 +211,7 @@ public class HomeActivity extends Activity {
                     jsonString += line;
                 }
 
-                List<String> list = new ArrayList<String>();
+//                List<String> list = new ArrayList<String>();
                 JSONObject jsonObject = new JSONObject(jsonString);
                 mRoomArray = jsonObject.getJSONArray("rooms");
 
