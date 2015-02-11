@@ -19,6 +19,10 @@
             <label>Room Capacity</label>
             <input type="text" ng-model="room.capacity" class="form-control" placeholder="Enter room capacity">
         </div>
+        <div class="form-group">
+            <label>Background Image (optional)</label>
+            <input id="background-image" type="file" file-upload="file">
+        </div>
         <button type="submit" class="btn btn-success">{{isEditing ? "Update" : "Create"}}</button>
         <button type="button" class="btn btn-danger" ng-click="clearInputs()">Clear</button>
     </form>

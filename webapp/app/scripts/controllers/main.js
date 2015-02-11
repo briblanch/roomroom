@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name capstone.controller:MainCtrl
+ * @name roomroom.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the capstone
+ * Controller of the roomroom
  */
 
-angular.module('capstone')
+angular.module('roomroom')
     .controller('MainCtrl', function($scope, $timeout, RoomApi) {
         $scope.roomUpdated = false;
         $scope.roomUpdatedError = false;
@@ -19,11 +19,13 @@ angular.module('capstone')
          * Public Functions
          */
         $scope.addOrUpdateRoom = function(room) {
-            if (!room.name || !room.calendar || !room) {
+            if (!room || !room.name || !room.calendar || !room) {
                 // Show some error
-
+                $scope.clearInputs();
+                return;
             } else {
                 room.capacity = parseInt(room.capacity);
+                room.background = $scope.file;
 
                 if ($scope.isEditing) {
                     RoomApi.updateRoom(room).then(function(result) {
@@ -51,6 +53,7 @@ angular.module('capstone')
 
         $scope.clearInputs = function() {
             $scope.room = '';
+            clearFile();
         };
 
         $scope.$watch('rooms', function() {
@@ -81,6 +84,10 @@ angular.module('capstone')
             });
         };
 
+        var clearFile = function() {
+            $scope.$broadcast('clearFile');
+        };
+
         var showSuccessAlert = function() {
             $scope.roomUpdated = true;
             $timeout(function() {
@@ -90,6 +97,14 @@ angular.module('capstone')
         };
 
         var showErrorAlert = function() {
+            $scope.roomUpdatedError = true;
+            $timeout(function() {
+                $scope.isEditing = false;
+                $scope.roomUpdatedError = false;
+            }, 2000, true);
+        };
+
+        $scope.showFileError = function() {
             $scope.roomUpdatedError = true;
             $timeout(function() {
                 $scope.isEditing = false;
