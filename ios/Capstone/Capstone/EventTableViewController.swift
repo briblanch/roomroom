@@ -21,7 +21,7 @@ class EventTableViewController: UITableViewController {
 
     var room: Room? {
         didSet {
-            self.roomTitleLabel.title = self.room!.name
+            self.roomTitleLabel.title = self.room!.name + " - " + self.room!.roomUsed
         }
     }
 
@@ -45,6 +45,7 @@ class EventTableViewController: UITableViewController {
         NSTimer.scheduledTimerWithTimeInterval(60*5, target: self, selector: "getEvents", userInfo: nil, repeats: true)
 
         self.getEvents()
+        self.getRoomStatus()
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,6 +81,10 @@ class EventTableViewController: UITableViewController {
 
             self.tableView.reloadData()
         }
+    }
+    
+    func getRoomStatus() {
+        roomApi.getRoomStatus(forRoom: self.room!)
     }
 
     @IBAction func dateWasSelected(sender: UIDatePicker) {
