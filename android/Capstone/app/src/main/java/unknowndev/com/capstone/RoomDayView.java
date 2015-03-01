@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.jar.JarEntry;
 
 
 public class RoomDayView extends ListActivity {
@@ -47,8 +48,12 @@ public class RoomDayView extends ListActivity {
     static final ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 
     private static final String baseURL = "http://asu-capstone.appspot.com/api/rooms/events/";
+    private static final String arduinoURL = "http://10.180.55.86";
 
     private static JSONArray mEventArray;
+    private static JSONObject mRoomStatus;
+
+    private static String roomStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,10 @@ public class RoomDayView extends ListActivity {
 
         Intent intent = getIntent();
         String roomTitle = intent.getStringExtra(HomeActivity.ROOM_TITLE);
-        setTitle(roomTitle);
+
+        getRoomStatus();
+
+        setTitle(roomTitle + " - " + roomStatus);
 
         SimpleAdapter adapter = new SimpleAdapter(
                 this,
@@ -229,4 +237,48 @@ public class RoomDayView extends ListActivity {
             return rootView;
         }
     }
+
+    private void getRoomStatus() {
+        try{
+            URL url = new URL(arduinoURL);
+            HttpURLConnection con = (HttpURLConnection) url
+                    .openConnection();
+            readStream(con.getInputStream());
+            roomStatus = mRoomStatus.getString("roomUsed");
+            System.out.println(roomStatus);
+        }
+        catch  (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readStream(InputStream in) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(in));
+            String jsonString = "";
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                jsonString += line;
+            }
+
+//                List<String> list = new ArrayList<String>();
+            mRoomStatus = new JSONObject(jsonString);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
