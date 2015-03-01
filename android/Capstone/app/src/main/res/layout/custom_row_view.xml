@@ -6,20 +6,46 @@
     android:paddingLeft="20dp"
     android:paddingTop="20dp"
     android:paddingBottom="20dp">
+
     <TextView android:id="@+id/text1"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
-    <TextView android:id="@+id/text2"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"/>
-    <TextView android:id="@+id/text3"
-        android:typeface="sans"
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView android:id="@+id/text2"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:id="@+id/textView"
+            android:textStyle="bold"
+            android:textSize="12sp" />
+
+        <TextView android:id="@+id/text3"
+            android:typeface="sans"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/text4"
         android:textSize="14sp"
         android:textStyle="italic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:typeface="sans" />
+
 </LinearLayout>
