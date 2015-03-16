@@ -8,7 +8,7 @@ public class Room {
     private String mName;
     private String mCalender;
     private int mCapacity;
-    private String mRoomUsed;
+    private Boolean mRoomUsed;
 
     public Room(String id, String name, String calender, int capacity, String roomUsed) {
         mId = id;
@@ -50,11 +50,11 @@ public class Room {
         mCapacity = capacity;
     }
 
-    public String getRoomStatus() {
+    public Boolean getRoomStatus() {
         return mRoomUsed;
     }
 
-    public void setRoomStatus(String roomUsed) {
+    public void setRoomStatus(Boolean roomUsed) {
         mRoomUsed = roomUsed;
     }
 }
