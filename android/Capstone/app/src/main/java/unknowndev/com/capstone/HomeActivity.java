@@ -140,8 +140,6 @@ public class HomeActivity extends Activity {
                         TextView roomId = (TextView) ((TableRow) v).getChildAt(3);
                         intent.putExtra(ROOM_ID, roomId.getText());
                         intent.putExtra(ROOM_STATUS, "False");
-
-
                         startActivity(intent);
                     }
                 });
