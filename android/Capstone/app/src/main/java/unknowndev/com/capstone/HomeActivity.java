@@ -29,8 +29,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class HomeActivity extends Activity {
@@ -50,7 +48,6 @@ public class HomeActivity extends Activity {
                     .commit();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,7 +124,6 @@ public class HomeActivity extends Activity {
             TextView textView;
 
             for(int i = 0; i < mRoomArray.length(); i++) {
-                System.out.println(mRoomArray.toString());
                 tableRow = new TableRow(mContext);
                 tableRow.setClickable(true);
                 tableRow.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +137,7 @@ public class HomeActivity extends Activity {
                         startActivity(intent);
                     }
                 });
+
                 for(int j = 0; j < 4; j++) {
                     textView = new TextView(mContext);
                     textView.setTextColor(Color.BLACK);
@@ -206,12 +203,11 @@ public class HomeActivity extends Activity {
             try {
                 reader = new BufferedReader(new InputStreamReader(in));
                 String jsonString = "";
-                String line = "";
+                String line;
                 while ((line = reader.readLine()) != null) {
                     jsonString += line;
                 }
 
-//                List<String> list = new ArrayList<String>();
                 JSONObject jsonObject = new JSONObject(jsonString);
                 mRoomArray = jsonObject.getJSONArray("rooms");
 
