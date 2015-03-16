@@ -1,7 +1,5 @@
 package unknowndev.com.capstone;
 
-import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -12,33 +10,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.SimpleAdapter;
 
 import com.goebl.david.Webb;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.FieldPosition;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 
@@ -53,9 +37,7 @@ public class RoomDayView extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_room_day_view);
-
         Intent intent = getIntent();
         String roomTitle = intent.getStringExtra(HomeActivity.ROOM_TITLE);
         setTitle(roomTitle);
@@ -102,40 +84,6 @@ public class RoomDayView extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    private void populateList(String roomId) {
-//
-//        System.out.println("ROOM ID" + roomId);
-//        HashMap<String,String> temp = new HashMap<String,String>();
-//        temp.put("event","QA Meeting");
-//        temp.put("time", "11:00am-11:30am");
-//        temp.put("creator", "Mike Robbins");
-//        list.add(temp);
-//
-//        HashMap<String,String> temp1 = new HashMap<String,String>();
-//        temp1.put("event","Dev show and tell");
-//        temp1.put("time", "12:00pm-1:30pm");
-//        temp1.put("creator", "Brent Arndorfer");
-//        list.add(temp1);
-//
-//        HashMap<String,String> temp2 = new HashMap<String,String>();
-//        temp2.put("event","Test Blitz");
-//        temp2.put("time", "3:00pm-5:00pm");
-//        temp2.put("creator", "Robert Harwell");
-//        list.add(temp2);
-//
-//        HashMap<String,String> temp3 = new HashMap<String,String>();
-//        temp3.put("event","Pythonista Meeting");
-//        temp3.put("time", "5:15pm-5:30pm");
-//        temp3.put("creator", "Shawn Rusaw");
-//        list.add(temp3);
-//
-//        HashMap<String,String> temp4 = new HashMap<String,String>();
-//        temp4.put("event","Date Night");
-//        temp4.put("time", "6:00pm-7:30pm");
-//        temp4.put("creator", "Derrick Ruhbar");
-//        list.add(temp4);
-//    }
-
     private void getData(String roomId) {
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.
@@ -152,7 +100,6 @@ public class RoomDayView extends ListActivity {
                     .ensureSuccess()
                     .asJsonObject()
                     .getBody();
-            System.out.println(result.toString());
 
             mEventArray = result.getJSONArray("events");
 
@@ -169,7 +116,6 @@ public class RoomDayView extends ListActivity {
                 temp.put("endTime", endTime);
                 temp.put("creator", mEventArray.getJSONObject(i).getJSONObject("creator")
                         .getString("displayName"));
-                temp.put("time", "5:00pm");
                 list.add(temp);
             }
         } catch (Exception e) {
@@ -196,7 +142,6 @@ public class RoomDayView extends ListActivity {
                 hour = 12;
             }
 
-
             int minute = calendar.get(Calendar.MINUTE);
             String minuteString = "" + minute;
 
@@ -205,18 +150,11 @@ public class RoomDayView extends ListActivity {
             }
 
             return hour + ":" + minuteString + amPm;
-        } catch(ParseException e) {
-
-        }
+        } catch(ParseException e) {}
 
         return "";
     }
 
-
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {

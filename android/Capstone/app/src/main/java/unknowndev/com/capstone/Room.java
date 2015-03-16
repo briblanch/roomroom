@@ -1,8 +1,6 @@
 package unknowndev.com.capstone;
 
-/**
- * Created by kristophersmith on 1/17/15.
- */
+
 public class Room {
     private String mId;
     private String mName;

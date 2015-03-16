@@ -2,9 +2,7 @@ package unknowndev.com.capstone;
 
 import java.util.Date;
 
-/**
- * Created by kristophersmith on 1/17/15.
- */
+
 public class Event {
     private String mSummary;
     private Date mStart;
