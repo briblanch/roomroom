@@ -35,6 +35,7 @@ public class HomeActivity extends Activity {
 
     public final static String ROOM_TITLE = "unknowndev.com.capstone.ROOMTITLE";
     public final static String ROOM_ID = "unknowndev.com.capstone.ROOMID";
+    public final static String ROOM_STATUS = "unknowndev.com.capstone.ROOMSTATUS";
 
     private static JSONArray mRoomArray;
 
@@ -134,6 +135,7 @@ public class HomeActivity extends Activity {
                         intent.putExtra(ROOM_TITLE, roomTitle.getText());
                         TextView roomId = (TextView) ((TableRow) v).getChildAt(3);
                         intent.putExtra(ROOM_ID, roomId.getText());
+                        intent.putExtra(ROOM_STATUS, "False");
                         startActivity(intent);
                     }
                 });
