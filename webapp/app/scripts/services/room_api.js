@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc service
- * @name capstoneApp.RoomApi
+ * @name roomroomApp.RoomApi
  * @description
  * # RoomApi
- * Factory in the capstoneApp.
+ * Factory in the roomroomApp.
  */
-angular.module('capstone')
+angular.module('roomroom')
     .factory('RoomApi', function($http, $q) {
         var addRoomUrl = 'api/room';
         var getRoomsUrl = 'api/rooms';

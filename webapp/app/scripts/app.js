@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name capstone
+ * @name roomroom
  * @description
- * # capstone
+ * # roomroom
  *
  * Main module of the application.
  */
 angular
-    .module('capstone', [
+    .module('roomroom', [
                 'ngAnimate',
                 'ngCookies',
                 'ngResource',

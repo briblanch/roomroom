@@ -3,7 +3,7 @@
 describe('Service: RoomApi', function () {
 
   // load the service's module
-  beforeEach(module('capstone'));
+  beforeEach(module('roomroom'));
 
   // instantiate service
   var RoomApi;
