@@ -10,7 +10,7 @@
 angular.module('roomroom')
     .directive('fileUpload', function($parse) {
         var fileIsValid = function(file) {
-            return file.type.indexOf("image") > -1;
+            return file.type.indexOf('image') > -1;
         };
 
         var clearFile = function(element) {
@@ -31,7 +31,7 @@ angular.module('roomroom')
                             modelSetter(scope, file);
                         });
                     } else {
-                        alert("File must be an image");
+                        window.alert('File must be an image');
                         clearFile(element);
                     }
                 });

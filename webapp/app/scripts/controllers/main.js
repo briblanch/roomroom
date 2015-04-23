@@ -19,7 +19,7 @@ angular.module('roomroom')
          * Public Functions
          */
         $scope.addOrUpdateRoom = function(room) {
-            if (!room || !room.name || !room.calendar || !room) {
+            if (!room || !room.name || !room.calendar) {
                 // Show some error
                 $scope.clearInputs();
                 return;
@@ -53,6 +53,7 @@ angular.module('roomroom')
 
         $scope.clearInputs = function() {
             $scope.room = '';
+            $scope.isEditing = false;
             clearFile();
         };
 

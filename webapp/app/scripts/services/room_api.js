@@ -25,6 +25,23 @@ angular.module('roomroom')
 
                 return deferred.promise;
             },
+            uploadRoomPhoto: function(uploadUrl) {
+                var deferred = $q.defer();
+
+                var fd = new FormData();
+                fd.append('file', fd);
+
+                $http.post(uploadUrl, fd, {
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
+                }).then(function(result) {
+                    deferred.resolve(result);
+                }, function(result) {
+                    deferred.reject(result);
+                });
+
+                return deferred.promise;
+            },
             getRooms: function() {
                 var deferred = $q.defer();
 
