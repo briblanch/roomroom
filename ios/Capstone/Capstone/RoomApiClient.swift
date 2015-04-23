@@ -19,11 +19,11 @@ class RoomApiClient: NSObject {
             var rooms = [Room]()
 
             if let responseDict = responseObject as? Dictionary<String, AnyObject> {
-                for room in responseDict["rooms"] as Array<Dictionary<String, AnyObject>> {
-                    rooms.append(Room(id: room["id"] as String,
-                                    name: room["name"] as String,
-                                calendar: room["calendar"] as String,
-                                capacity: room["capacity"] as Int,
+                for room in responseDict["rooms"] as! Array<Dictionary<String, AnyObject>> {
+                    rooms.append(Room(id: room["id"] as! String,
+                                    name: room["name"] as! String,
+                                calendar: room["calendar"] as! String,
+                                capacity: room["capacity"] as! Int,
                                 roomUsed: "False" as String))
                 }
                 
@@ -42,15 +42,15 @@ class RoomApiClient: NSObject {
             var events = [Event]()
 
             if let responseDict = responseObject as? Dictionary<String, AnyObject> {
-                for event in responseDict["events"] as Array<Dictionary<String, AnyObject>> {
-                    let start = event["start"] as Dictionary<String, AnyObject>
-                    let end = event["end"] as Dictionary<String, AnyObject>
-                    let organizer = event["organizer"] as Dictionary<String, AnyObject>
+                for event in responseDict["events"] as! Array<Dictionary<String, AnyObject>> {
+                    let start = event["start"] as! Dictionary<String, AnyObject>
+                    let end = event["end"] as! Dictionary<String, AnyObject>
+                    let organizer = event["organizer"] as! Dictionary<String, AnyObject>
 
-                    let summary = event["summary"] as String
-                    let creator = organizer["displayName"] as String
-                    let startDate = Event.parseDateString(start["dateTime"] as String)
-                    let endDate = Event.parseDateString(end["dateTime"] as String)
+                    let summary = event["summary"] as! String
+                    let creator = organizer["displayName"] as! String
+                    let startDate = Event.parseDateString(start["dateTime"] as! String)
+                    let endDate = Event.parseDateString(end["dateTime"] as! String)
 
                     events.append(Event(summary: summary, start: startDate!, end: endDate!, creator: creator))
                 }

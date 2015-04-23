@@ -31,7 +31,7 @@ class RoomTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(self.cellIdentifier, forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(self.cellIdentifier, forIndexPath: indexPath) as! UITableViewCell
 
         cell.textLabel?.text = self.rooms[indexPath.row].name
         
@@ -62,7 +62,7 @@ class RoomTableViewController: UITableViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destinationVc = segue.destinationViewController as EventTableViewController
+        let destinationVc = segue.destinationViewController as! EventTableViewController
         let index = self.tableView.indexPathForSelectedRow()
 
         destinationVc.date = NSDate()

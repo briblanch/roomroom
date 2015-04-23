@@ -8,7 +8,7 @@
 
 import UIKit
 
-let eventTableCellHeight = CGFloat(80)
+let EventTableCellHeight = CGFloat(80)
 
 class EventTableViewCell: UITableViewCell {
 

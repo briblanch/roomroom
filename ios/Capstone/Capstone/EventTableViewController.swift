@@ -11,6 +11,11 @@ class EventTableViewController: UITableViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var dateButton: UIBarButtonItem!
 
+    let cellIdentifer = "eventCell"
+
+    var secondTimer = NSTimer()
+    var minuteTimer = NSTimer()
+
     lazy var roomApi = RoomApiClient()
 
     var date: NSDate? {
@@ -27,11 +32,15 @@ class EventTableViewController: UITableViewController {
 
     var events = [Event]()
 
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.registerNib(UINib(nibName: "EventTableViewCell", bundle: nil), forCellReuseIdentifier: "eventCell")
+        self.tableView.registerNib(UINib(nibName: "EventTableViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifer)
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableView.rowHeight = eventTableCellHeight
+        self.tableView.rowHeight = EventTableCellHeight
 
         self.datePicker.datePickerMode = UIDatePickerMode.Date
         self.datePicker.hidden = true
@@ -42,11 +51,17 @@ class EventTableViewController: UITableViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "appResumed",
             name: UIApplicationDidBecomeActiveNotification, object: nil)
 
-        // 5 miuntes
-        NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "getEvents", userInfo: nil, repeats: true)
+
+//        self.minuteTimer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "getEvents", userInfo: nil, repeats: true)
+        self.secondTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "everySecond", userInfo: nil, repeats: true)
 
         self.getEvents()
         self.getRoomStatus()
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        self.minuteTimer.invalidate()
+        self.secondTimer.invalidate()
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,15 +71,16 @@ class EventTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return events.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("eventCell", forIndexPath: indexPath) as EventTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifer, forIndexPath: indexPath) as! EventTableViewCell
 
-        cell.event = events[indexPath.row]
+        if (self.events.count > 0) {
+            cell.event = events[indexPath.row]
+        }
 
         return cell
     }
@@ -73,9 +89,8 @@ class EventTableViewController: UITableViewController {
         roomApi.getEvents(forRoom: self.room!, forDate: self.date!) { (events, error) in
             if (events != nil && error == nil) {
                 self.events = events!
-                self.events.sort {(e1, e2) -> Bool in
-                    return e1.start.earlierDate(e2.start) == e1.start
-                }
+                self.filterExpiredEvents()
+                self.sortEventsByDate()
             } else {
                 // error
             }
@@ -86,6 +101,22 @@ class EventTableViewController: UITableViewController {
     
     func getRoomStatus() {
         roomApi.getRoomStatus(forRoom: self.room!)
+    }
+
+    // MARK: - Event Helpers
+    func filterExpiredEvents() -> Bool {
+        let startCount = self.events.count;
+        let referenceDate = NSDate()
+
+        self.events = self.events.filter {$0.end > referenceDate}
+
+        return startCount > self.events.count
+    }
+
+    func sortEventsByDate() {
+        self.events.sort {(e1, e2) -> Bool in
+            return e1.start < e2.start
+        }
     }
 
     @IBAction func dateWasSelected(sender: UIDatePicker) {
@@ -104,6 +135,14 @@ class EventTableViewController: UITableViewController {
         return dateFormatter.stringFromDate(date)
     }
 
+    // MARK: - Events
+    func everySecond() {
+        if (self.filterExpiredEvents()) {
+            self.tableView.reloadData()
+        }
+        // TODO: Update time label when implemented
+    }
+
     func dateHasChanged(notifcation: NSNotification) {
         self.date = NSDate()
         self.datePicker.date = self.date!
@@ -116,8 +155,6 @@ class EventTableViewController: UITableViewController {
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter()
-            .removeObserver(self, name: UIApplicationSignificantTimeChangeNotification,
-                                                            object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }

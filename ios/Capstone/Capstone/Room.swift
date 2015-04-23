@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Room: NSObject {
+class Room: NSObject, Equatable {
     var id: String
     var name: String
     var calendar: String
@@ -22,4 +22,12 @@ class Room: NSObject {
         self.capacity = capacity
         self.roomUsed = roomUsed
     }
+
+    override func isEqual(object: AnyObject?) -> Bool {
+        return name == object?.name
+    }
+}
+
+func ==(lhs: Room, rhs: Room) -> Bool {
+    return lhs.id == rhs.id
 }
