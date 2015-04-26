@@ -1,8 +1,154 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="unknowndev.com.capstone.RoomDayView$PlaceholderFragment">
+    android:layout_height="match_parent" android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    tools:context="unknowndev.com.capstone.RoomDayView$PlaceholderFragment"
+    android:id="@+id/eventContainer">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="0dp"
+        android:background="#99000000"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:id="@+id/linearLayout">
+
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timeClock"
+            android:textSize="50sp"
+            android:format12Hour="h:mm:ss a"
+            android:layout_alignStart="@+id/dateClock"
+            android:paddingTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#ffffffff" />
+
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateClock"
+            android:format12Hour="EEE, MMM dd, yyyy"
+            android:textSize="25sp"
+            android:layout_marginEnd="0dp"
+            android:layout_below="@+id/timeClock"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#ffffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Upcoming"
+            android:id="@+id/textView2"
+            android:textSize="50sp"
+            android:layout_marginTop="40dp"
+            android:layout_below="@+id/timeClock"
+            android:layout_alignEnd="@+id/timeClock"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#ffffffff" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="In Use"
+        android:id="@+id/inUseTextView"
+        android:layout_marginTop="62dp"
+        android:textSize="50sp"
+        android:textColor="#ff4cff2d"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/roomNameTextView"
+        android:layout_marginStart="226dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Event Name"
+        android:id="@+id/eventNameTextView"
+        android:layout_marginTop="33dp"
+        android:textSize="50sp"
+        android:textColor="#ff4cff2d"
+        android:layout_below="@+id/inUseTextView"
+        android:layout_alignStart="@+id/roomNameTextView"
+        android:layout_marginStart="158dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="-"
+        android:id="@+id/dashTextView"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/eventNameTextView"
+        android:layout_alignStart="@+id/inUseTextView"
+        android:layout_marginStart="61dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="AM"
+        android:id="@+id/startMeridiemTextView"
+        android:layout_alignTop="@+id/dashTextView"
+        android:layout_alignEnd="@+id/dashTextView"
+        android:layout_marginEnd="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="7:00"
+        android:id="@+id/startTimeTextView"
+        android:layout_marginEnd="7dp"
+        android:layout_alignTop="@+id/startMeridiemTextView"
+        android:layout_toStartOf="@+id/startMeridiemTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="8:00"
+        android:id="@+id/endTimeTextView"
+        android:layout_alignBottom="@+id/dashTextView"
+        android:layout_toEndOf="@+id/dashTextView"
+        android:layout_marginStart="13dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="AM"
+        android:id="@+id/endMeridiemTextView"
+        android:layout_alignBottom="@+id/endTimeTextView"
+        android:layout_toEndOf="@+id/endTimeTextView"
+        android:layout_marginStart="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Room Name"
+        android:id="@+id/roomNameTextView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="22dp"
+        android:textSize="60sp"
+        android:textColor="#ff4cff2d" />
+
+    <!--<fragment-->
+        <!--android:id="@+id/custom_row"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></fragment>-->
 </RelativeLayout>
