@@ -5,6 +5,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,12 +16,15 @@ import android.widget.SimpleAdapter;
 import com.goebl.david.Webb;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -102,19 +106,49 @@ public class RoomDayView extends ListActivity {
                     .getBody();
 
             mEventArray = result.getJSONArray("events");
+            Log.d("RoomDayView", "Received " + mEventArray.length() + " events");
+
+            JSONObject[] events = new JSONObject[mEventArray.length()];
 
             for(int i = 0; i < mEventArray.length(); i++) {
+                events[i] = mEventArray.getJSONObject(i);
+            }
+
+            Arrays.sort(events, new Comparator<JSONObject>() {
+                final SimpleDateFormat sdfToDate = new SimpleDateFormat
+                                                                ("yyyy-MM-dd'T'HH:mm:ssssZ");
+                @Override
+                public int compare(JSONObject lhs, JSONObject rhs) {
+                    int compared = 0;
+                    try {
+                        compared = sdfToDate.parse(lhs.getJSONObject("start").getString("dateTime"))
+                                .compareTo(sdfToDate.parse(rhs.getJSONObject("start")
+                                        .getString("dateTime")));
+                    } catch(Exception e) {
+
+                    }
+                    return compared;
+                }
+            });
+
+//            Log.d("SortedArray", events.toString());
+            for(int i = 0; i < events.length; i++) {
+                System.out.println(events[i].getJSONObject("start").getString("dateTime"));
+            }
+
+
+            for(int i = 0; i < events.length; i++) {
                 HashMap<String,String> temp = new HashMap<String,String>();
-                temp.put("event", mEventArray.getJSONObject(i).getString("summary"));
-                String startTime = timeBuilder(mEventArray.getJSONObject(i).getJSONObject("start")
+                temp.put("event", events[i].getString("summary"));
+                String startTime = timeBuilder(events[i].getJSONObject("start")
                         .getString("dateTime"));
 
                 temp.put("startTime", startTime);
 
-                String endTime = timeBuilder(mEventArray.getJSONObject(i).getJSONObject("end")
+                String endTime = timeBuilder(events[i].getJSONObject("end")
                         .getString("dateTime"));
                 temp.put("endTime", endTime);
-                temp.put("creator", mEventArray.getJSONObject(i).getJSONObject("creator")
+                temp.put("creator", events[i].getJSONObject("creator")
                         .getString("displayName"));
                 list.add(temp);
             }

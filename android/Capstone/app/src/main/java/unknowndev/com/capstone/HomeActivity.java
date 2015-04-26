@@ -4,20 +4,17 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 
 public class HomeActivity extends Activity {
@@ -74,6 +72,12 @@ public class HomeActivity extends Activity {
     public static class PlaceholderFragment extends Fragment {
         public Context mContext;
 
+        private GridViewAdapter mAdapter;
+        private ArrayList<String> roomNames = new ArrayList<>();
+        private ArrayList<Integer> roomImages = new ArrayList<>();
+
+        private GridView gridView;
+
         private static final String baseURL = "http://asu-capstone.appspot.com/api/rooms";
 
         // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
@@ -102,12 +106,35 @@ public class HomeActivity extends Activity {
                             requestDataRefresh(rootView);
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
-                    }, 5000);
+                    }, 2000);
                 }
             });
 
             // get data from server
             getData();
+
+            // prepared arraylist and passed it to the Adapter class
+            mAdapter = new GridViewAdapter(getActivity(), roomNames, roomImages);
+
+            // Set custom adapter to gridview
+            gridView = (GridView) rootView.findViewById(R.id.gridView1);
+            gridView.setAdapter(mAdapter);
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getActivity(), RoomDayView.class);
+                        String roomTitle = (String)parent.getItemAtPosition(position);
+                        intent.putExtra(ROOM_TITLE, roomTitle);
+                    try {
+                        String roomId = mRoomArray.getJSONObject(position).getString("id");
+                        intent.putExtra(ROOM_ID, roomId);
+                        startActivity(intent);
+                    } catch(Exception e) {
+
+                    }
+                }
+
+            });
 
             populateRoomTable(mRoomArray, rootView);
 
@@ -115,67 +142,15 @@ public class HomeActivity extends Activity {
         }
 
         private void populateRoomTable(JSONArray roomArray, View rootView) {
-            // table creation
             mContext = getActivity().getApplicationContext();
-            TableLayout tableLayout = (TableLayout) rootView.findViewById(R.id.room_table);
-            tableLayout.removeAllViewsInLayout();
-
-            TableRow tableRow;
-            TextView textView;
 
             for(int i = 0; i < mRoomArray.length(); i++) {
-                tableRow = new TableRow(mContext);
-                tableRow.setClickable(true);
-                tableRow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), RoomDayView.class);
-                        TextView roomTitle = (TextView) ((TableRow) v).getChildAt(0);
-                        intent.putExtra(ROOM_TITLE, roomTitle.getText());
-                        TextView roomId = (TextView) ((TableRow) v).getChildAt(3);
-                        intent.putExtra(ROOM_ID, roomId.getText());
-                        startActivity(intent);
-                    }
-                });
+                try {
+                    roomNames.add(mRoomArray.getJSONObject(i).getString("name"));
+                    roomImages.add(R.drawable.ic_launcher);
+                } catch(JSONException e) {
 
-                for(int j = 0; j < 4; j++) {
-                    textView = new TextView(mContext);
-                    textView.setTextColor(Color.BLACK);
-                    textView.setId(j);
-
-                    switch(j) {
-                        case 0:
-                            try {
-                                textView.setText(mRoomArray.getJSONObject(i).getString("name"));
-                            } catch(JSONException e) {
-
-                            }
-                            break;
-                        case 1:
-                            try {
-                                textView.setText(mRoomArray.getJSONObject(i).getString("capacity"));
-                            } catch(JSONException e) {
-
-                            }
-                            break;
-                        case 2:
-                            textView.setText("Yes");
-                            break;
-                        case 3:
-                            textView.setVisibility(View.INVISIBLE);
-                            try {
-                                textView.setText(mRoomArray.getJSONObject(i).getString("id"));
-                            } catch(JSONException e) {
-
-                            }
-                            break;
-                    }
-
-                    textView.setGravity(Gravity.CENTER);
-                    textView.setPadding(20, 20, 20, 20);
-                    tableRow.addView(textView);
                 }
-                tableLayout.addView(tableRow);
             }
         }
 
