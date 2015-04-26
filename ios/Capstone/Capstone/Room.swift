@@ -13,11 +13,13 @@ class Room: NSObject {
     var name: String
     var calendar: String
     var capacity: Int
+    var roomUsed: String
 
-    init(id: String, name: String, calendar: String, capacity: Int) {
+    init(id: String, name: String, calendar: String, capacity: Int, roomUsed: String) {
         self.id = id
         self.name = name
         self.calendar = calendar
         self.capacity = capacity
+        self.roomUsed = roomUsed
     }
 }

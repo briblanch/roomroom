@@ -21,7 +21,7 @@ class EventTableViewController: UITableViewController {
 
     var room: Room? {
         didSet {
-            self.roomTitleLabel.title = self.room!.name
+            self.roomTitleLabel.title = self.room!.name + " - " + self.room!.roomUsed
         }
     }
 
@@ -35,6 +35,7 @@ class EventTableViewController: UITableViewController {
 
         self.datePicker.datePickerMode = UIDatePickerMode.Date
         self.datePicker.hidden = true
+        self.datePicker.date = self.date!
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "dateHasChanged:",
             name: UIApplicationSignificantTimeChangeNotification, object: nil)
@@ -42,9 +43,10 @@ class EventTableViewController: UITableViewController {
             name: UIApplicationDidBecomeActiveNotification, object: nil)
 
         // 5 miuntes
-        NSTimer.scheduledTimerWithTimeInterval(60*5, target: self, selector: "getEvents", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "getEvents", userInfo: nil, repeats: true)
 
         self.getEvents()
+        self.getRoomStatus()
     }
 
     override func didReceiveMemoryWarning() {
@@ -81,6 +83,10 @@ class EventTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
+    
+    func getRoomStatus() {
+        roomApi.getRoomStatus(forRoom: self.room!)
+    }
 
     @IBAction func dateWasSelected(sender: UIDatePicker) {
         self.date = sender.date
@@ -106,6 +112,7 @@ class EventTableViewController: UITableViewController {
 
     func appResumed() {
         self.date = NSDate()
+        self.getEvents()
     }
 
     deinit {
