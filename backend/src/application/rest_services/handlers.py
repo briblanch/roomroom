@@ -32,8 +32,6 @@ def get_rooms():
 
 # Updates the info of a room with the info in the request
 def update_room(request_data, room_key):
-	print "DATA: ", request_data
-	print "KEY: ", room_key
 	room_to_update = Room.get_by_id(int(room_key))
 	room_to_update.name = request_data['name']
 	room_to_update.capacity = request_data['capacity']
@@ -46,24 +44,45 @@ def update_room(request_data, room_key):
 	room_to_update['id'] = str(room_key.id())
 	return room_to_update
 
+
+def delete_room(request_data, room_key):
+	room_to_del = Room.get_by_id(int(room_key))
+	room_to_del.delete()
+
 # Fetches all of the events from the google calendar api for a given room
-def get_room_events(request_data, room_key):
+def get_room_events(request_data, room_key, start_date, end_date):
 	room = Room.get_by_id(int(room_key))
 	cal_id = room.calendar
 	
-	timeMin, timeMax = event_time_restrictions()
 	
 	cal_api = get_calendar_api_obj()
 	events_list = list()
 	page_token = None
 	
-	while True:
-		events = cal_api.events().list(calendarId=cal_id, pageToken=page_token, timeMin=timeMin, timeMax=timeMax).execute()
-		for event in events['items']:
-			events_list.append(event['summary'])
-			page_token = events.get('nextPageToken')
-		if not page_token:
-			break
+	events = cal_api.events().list(calendarId=cal_id, pageToken=page_token, timeMin=timeMin, timeMax=timeMax).execute()
+	for event in events['items']:
+		events_list.append(event['summary'])
 
 	return events_list
+
+# # Fetches all of the events from the google calendar api for a given room
+# def get_room_events(request_data, room_key, start_date, end_dante):
+# 	room = Room.get_by_id(int(room_key))
+# 	cal_id = room.calendar
+	
+# 	timeMin, timeMax = event_time_restrictions()
+	
+# 	cal_api = get_calendar_api_obj()
+# 	events_list = list()
+# 	page_token = None
+	
+# 	while True:
+# 		events = cal_api.events().list(calendarId=cal_id, pageToken=page_token, timeMin=timeMin, timeMax=timeMax).execute()
+# 		for event in events['items']:
+# 			events_list.append(event['summary'])
+# 			page_token = events.get('nextPageToken')
+# 		if not page_token:
+# 			break
+
+# 	return events_list
 

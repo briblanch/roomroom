@@ -41,8 +41,19 @@ def update_room(room_key):
     updated_room = handlers.update_room(request.get_json(), room_key)
     return jsonify({'room': updated_room})
 
+# Delete a room
+@app.route('/api/rooms/delete/<room_key>', methods = ['DELTE'])
+def delete_room(room_key):
+    handlers.delete_room(request.get_json(), room_key)
+    return jsonify({'deleted_room': room_key})
+
 # Returns all events for a given calendar
-@app.route('/api/rooms/events/<room_key>', methods = ['GET'])
+@app.route('/api/rooms/events/<room_key>/<start_date>/<end_date>', methods = ['GET'])
 def get_room_events(room_key):
-	events = handlers.get_room_events(request.get_json(), room_key)
+	events = handlers.get_room_events(request.get_json(), room_key, start_date, end_date)
 	return jsonify({'events': events})
+
+@app.route('/upload_image', methods = ['POST'])
+def upload_image():
+    uploadUri = blobstore.create_upload_url('/submit', gs_bucket_name=BUCKET_NAME)
+
