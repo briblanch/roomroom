@@ -2,6 +2,7 @@ package unknowndev.com.capstone;
 
 import android.app.Fragment;
 import android.app.ListActivity;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.goebl.david.Webb;
@@ -46,18 +48,16 @@ public class RoomDayView extends ListActivity {
         String roomTitle = intent.getStringExtra(HomeActivity.ROOM_TITLE);
         setTitle(roomTitle);
 
-        SimpleAdapter adapter = new SimpleAdapter(
-                this,
-                list,
-                R.layout.custom_row_view,
-                new String[] {"event", "startTime", "endTime", "creator"},
-                new int[] {R.id.text1,R.id.text2, R.id.text3, R.id.text4}
-        );
+//        SimpleAdapter adapter = new SimpleAdapter(
+//                this,
+//                list,
+//                R.layout.custom_row_view,
+//                new String[] {"event", "startTime", "endTime", "creator"},
+//                new int[] {R.id.text1,R.id.text2, R.id.text3, R.id.text4}
+//        );
 
         list.clear();
         getData(intent.getStringExtra(HomeActivity.ROOM_ID));
-
-        setListAdapter(adapter);
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -198,6 +198,17 @@ public class RoomDayView extends ListActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_room_day_view, container, false);
+            ListView lv = (ListView)rootView.findViewById(R.id.eventListView);
+            SimpleAdapter adapter = new SimpleAdapter(
+                    getActivity(),
+                    list,
+                    R.layout.custom_row_view,
+                    new String[] {"event", "startTime", "endTime"},
+                    new int[] {R.id.upcomingEventTextView,R.id.upcomingStartTimeTextView, R.id.upcomingEndTimeTextView}
+            );
+
+            lv.setAdapter(adapter);
+
             return rootView;
         }
     }

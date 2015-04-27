@@ -20,7 +20,8 @@
             android:name="unknowndev.com.capstone.RoomDayView"
             android:label="@string/title_activity_room_day_view"
             android:parentActivityName="unknowndev.com.capstone.HomeActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="unknowndev.com.capstone.MyActivity" />

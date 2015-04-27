@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
+    android:paddingTop="5dp"
     android:paddingBottom="20dp"
-    android:id="@+id/custom_row">
+    android:id="@+id/custom_row"
+    android:gravity="center_horizontal">
 
-    <TextView android:id="@+id/text1"
+    <TextView android:id="@+id/upcomingEventTextView"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:gravity="center_horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:textColor="#FFFFFF"/>
@@ -18,9 +19,10 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal" >
 
-        <TextView android:id="@+id/text2"
+        <TextView android:id="@+id/upcomingStartTimeTextView"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_width="wrap_content"
@@ -30,13 +32,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-"
-            android:id="@+id/textView"
+            android:text=" - "
+            android:id="@+id/upcomingDashTextView"
             android:textStyle="bold"
             android:textSize="12sp"
             android:textColor="#FFFFFF" />
 
-        <TextView android:id="@+id/text3"
+        <TextView android:id="@+id/upcomingEndTimeTextView"
             android:typeface="sans"
             android:textSize="12sp"
             android:layout_width="wrap_content"
@@ -45,13 +47,13 @@
             android:textColor="#FFFFFF" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/text4"
-        android:textSize="14sp"
-        android:textStyle="italic"
-        android:typeface="sans"
-        android:textColor="#FFFFFF" />
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:id="@+id/text4"-->
+        <!--android:textSize="14sp"-->
+        <!--android:textStyle="italic"-->
+        <!--android:typeface="sans"-->
+        <!--android:textColor="#FFFFFF" />-->
 
 </LinearLayout>
