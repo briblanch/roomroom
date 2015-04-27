@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.goebl.david.Webb;
 
@@ -39,14 +40,18 @@ public class RoomDayView extends ListActivity {
     private static final String baseURL = "http://asu-capstone.appspot.com/api/rooms/events/";
 
     private static JSONArray mEventArray;
+    private static String mRoomTitle;
+    private static String mCurrentEventName;
+    private static String mCurrentEventStartTime;
+    private static String mCurrentEventEndTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_day_view);
         Intent intent = getIntent();
-        String roomTitle = intent.getStringExtra(HomeActivity.ROOM_TITLE);
-        setTitle(roomTitle);
+        mRoomTitle = intent.getStringExtra(HomeActivity.ROOM_TITLE);
+//        setTitle(roomTitle);
 
 //        SimpleAdapter adapter = new SimpleAdapter(
 //                this,
@@ -138,19 +143,28 @@ public class RoomDayView extends ListActivity {
 
 
             for(int i = 0; i < events.length; i++) {
-                HashMap<String,String> temp = new HashMap<String,String>();
-                temp.put("event", events[i].getString("summary"));
-                String startTime = timeBuilder(events[i].getJSONObject("start")
-                        .getString("dateTime"));
+                if(i == 0) {
+                    mCurrentEventName = events[i].getString("summary");
+                    mCurrentEventStartTime = timeBuilder(events[i].getJSONObject("start")
+                            .getString("dateTime"));
+                    mCurrentEventEndTime = timeBuilder(events[i].getJSONObject("end")
+                            .getString("dateTime"));
 
-                temp.put("startTime", startTime);
+                } else {
+                    HashMap<String,String> temp = new HashMap<String,String>();
+                    temp.put("event", events[i].getString("summary"));
+                    String startTime = timeBuilder(events[i].getJSONObject("start")
+                            .getString("dateTime"));
 
-                String endTime = timeBuilder(events[i].getJSONObject("end")
-                        .getString("dateTime"));
-                temp.put("endTime", endTime);
-                temp.put("creator", events[i].getJSONObject("creator")
-                        .getString("displayName"));
-                list.add(temp);
+                    temp.put("startTime", startTime);
+
+                    String endTime = timeBuilder(events[i].getJSONObject("end")
+                            .getString("dateTime"));
+                    temp.put("endTime", endTime);
+                    list.add(temp);
+                }
+
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,9 +179,9 @@ public class RoomDayView extends ListActivity {
 
             String amPm;
             if(calendar.get(Calendar.AM_PM) == 0) {
-                amPm = "am";
+                amPm = " AM";
             } else {
-                amPm = "pm";
+                amPm = " PM";
             }
 
             int hour = calendar.get(Calendar.HOUR);
@@ -208,6 +222,11 @@ public class RoomDayView extends ListActivity {
             );
 
             lv.setAdapter(adapter);
+
+            ((TextView)rootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
+            ((TextView)rootView.findViewById(R.id.eventNameTextView)).setText(mCurrentEventName);
+            ((TextView)rootView.findViewById(R.id.startTimeTextView)).setText(mCurrentEventStartTime);
+            ((TextView)rootView.findViewById(R.id.endTimeTextView)).setText(mCurrentEventEndTime);
 
             return rootView;
         }

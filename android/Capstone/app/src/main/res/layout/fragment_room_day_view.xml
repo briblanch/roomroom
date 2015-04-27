@@ -5,7 +5,8 @@
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
     tools:context="unknowndev.com.capstone.RoomDayView$PlaceholderFragment"
-    android:id="@+id/eventContainer">
+    android:id="@+id/eventContainer"
+    android:background="@drawable/sandiegoabstract">
 
     <LinearLayout
         android:orientation="vertical"
@@ -30,7 +31,11 @@
             android:layout_alignStart="@+id/dateClock"
             android:paddingTop="10dp"
             android:layout_gravity="center_horizontal"
-            android:textColor="#ffffffff" />
+            android:textColor="#ffffffff"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1" />
 
         <TextClock
             android:layout_width="wrap_content"
@@ -43,7 +48,11 @@
             android:layout_alignParentEnd="true"
             android:layout_gravity="center_horizontal"
             android:textColor="#ffffffff"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1" />
 
         <View android:id="@+id/separator1"
             android:background="#4fcb00"
@@ -52,9 +61,9 @@
             android:layout_centerVertical ="true"
             android:layout_alignParentTop="true"
             android:shadowColor="#000000"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="1" />
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="2" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,13 +71,17 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Upcoming"
             android:id="@+id/textView2"
-            android:textSize="50sp"
-            android:layout_marginTop="5dp"
+            android:textSize="40sp"
+            android:layout_marginTop="3dp"
             android:layout_below="@+id/timeClock"
             android:layout_alignEnd="@+id/timeClock"
             android:layout_gravity="center_horizontal"
             android:textColor="#ffffffff"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="10dp"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1" />
 
         <View android:id="@+id/separator2"
             android:background="#4fcb00"
@@ -86,114 +99,122 @@
             android:layout_height="242dp"
             android:id="@+id/eventListView"
             android:layout_weight="0.15"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="15dp" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="In Use"
-        android:id="@+id/inUseTextView"
-        android:layout_marginTop="62dp"
-        android:textSize="50sp"
-        android:textColor="#4fcb00"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/roomNameTextView"
-        android:layout_marginStart="226dp"
-        android:shadowColor="#000000"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="1"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Event Name"
-        android:id="@+id/eventNameTextView"
-        android:layout_marginTop="33dp"
-        android:textSize="50sp"
-        android:textColor="#4fcb00"
-        android:layout_below="@+id/inUseTextView"
-        android:layout_alignStart="@+id/roomNameTextView"
-        android:layout_marginStart="158dp"
-        android:shadowColor="#000000"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="1" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text=" - "
-        android:id="@+id/dashTextView"
-        android:layout_marginTop="12dp"
-        android:layout_below="@+id/eventNameTextView"
-        android:layout_alignStart="@+id/inUseTextView"
-        android:layout_marginStart="61dp"
-        android:textSize="30sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="AM"
-        android:id="@+id/startMeridiemTextView"
-        android:layout_marginEnd="17dp"
-        android:textSize="30sp"
-        android:layout_alignTop="@+id/dashTextView"
-        android:layout_toStartOf="@+id/endTimeTextView" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="7:00"
-        android:id="@+id/startTimeTextView"
-        android:textSize="30sp"
-        android:layout_alignTop="@+id/startMeridiemTextView"
-        android:layout_toStartOf="@+id/startMeridiemTextView"
-        android:layout_marginEnd="8dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="8:00"
-        android:id="@+id/endTimeTextView"
-        android:textSize="30sp"
-        android:layout_alignTop="@+id/dashTextView"
-        android:layout_alignEnd="@+id/inUseTextView" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="AM"
-        android:id="@+id/endMeridiemTextView"
-        android:layout_alignBottom="@+id/endTimeTextView"
-        android:layout_toEndOf="@+id/endTimeTextView"
-        android:layout_marginStart="8dp"
-        android:textSize="30sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Room Name"
-        android:id="@+id/roomNameTextView"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="22dp"
-        android:layout_marginBottom="22dp"
-        android:textSize="60sp"
-        android:textColor="#4fcb00"
-        android:shadowColor="#000000"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="1" />
+        android:layout_toStartOf="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="In Use"
+            android:id="@+id/inUseTextView"
+            android:layout_marginTop="60dp"
+            android:textSize="50sp"
+            android:textColor="#4fcb00"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/roomNameTextView"
+            android:layout_marginStart="0dp"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Event Name"
+            android:id="@+id/eventNameTextView"
+            android:layout_marginTop="95dp"
+            android:textSize="50sp"
+            android:textColor="#4fcb00"
+            android:layout_below="@+id/inUseTextView"
+            android:layout_alignStart="@+id/roomNameTextView"
+            android:layout_marginStart="0dp"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="7:00"
+                android:id="@+id/startTimeTextView"
+                android:textSize="30sp"
+                android:layout_alignTop="@+id/dashTextView"
+                android:layout_alignStart="@+id/eventNameTextView"
+                android:layout_gravity="center_horizontal"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text=" - "
+                android:id="@+id/dashTextView"
+                android:layout_below="@+id/eventNameTextView"
+                android:layout_alignStart="@+id/inUseTextView"
+                android:textSize="30sp"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="8:00"
+                android:id="@+id/endTimeTextView"
+                android:textSize="30sp"
+                android:layout_alignTop="@+id/dashTextView"
+                android:layout_toEndOf="@+id/dashTextView"
+                android:layout_marginLeft="0dp"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Room Name"
+            android:id="@+id/roomNameTextView"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:textSize="80sp"
+            android:textColor="#4fcb00"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:layout_marginTop="125dp"
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
 
     <!--<fragment-->
         <!--android:id="@+id/custom_row"-->
