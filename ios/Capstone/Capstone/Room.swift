@@ -16,6 +16,8 @@ class Room: NSObject, Equatable {
     var roomUsed: String
     var motionIp: String?
 
+    private lazy var roomApi = RoomApiClient()
+
     init(id: String, name: String, calendar: String, capacity: Int, roomUsed: String) {
         self.id = id
         self.name = name
@@ -35,6 +37,10 @@ class Room: NSObject, Equatable {
 
     override func isEqual(object: AnyObject?) -> Bool {
         return name == object?.name
+    }
+
+    func roomIsOccupied() {
+        roomApi.getRoomStatus(forRoom: self) 
     }
 }
 

@@ -62,12 +62,12 @@ class RoomApiClient: NSObject {
         }
     }
     
-    func getRoomStatus(forRoom room: Room) {
-        let URL = "http://10.180.52.165"
+    func getRoomStatus(forRoom room: Room, completion: completionHandler) {
+        let URL = room.motionIp!
         
         HTTPRequestManager.sharedInstance.GET(URL, paramaters: nil) { (responseObject, error) in
             if let responseDict = responseObject as? Dictionary<String, String> {
-                room.roomUsed = responseDict["roomUsed"]!
+                completion(responseDict["roomUsed"], nil)
             }
 
         }
