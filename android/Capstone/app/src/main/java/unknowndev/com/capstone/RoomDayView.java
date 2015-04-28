@@ -113,13 +113,13 @@ public class RoomDayView extends ListActivity {
             mEventArray = result.getJSONArray("events");
             Log.d("RoomDayView", "Received " + mEventArray.length() + " events");
 
-            JSONObject[] events = new JSONObject[mEventArray.length()];
+            JSONObject[] allTodayEvents = new JSONObject[mEventArray.length()];
 
             for(int i = 0; i < mEventArray.length(); i++) {
-                events[i] = mEventArray.getJSONObject(i);
+                allTodayEvents[i] = mEventArray.getJSONObject(i);
             }
 
-            Arrays.sort(events, new Comparator<JSONObject>() {
+            Arrays.sort(allTodayEvents, new Comparator<JSONObject>() {
                 final SimpleDateFormat sdfToDate = new SimpleDateFormat
                                                                 ("yyyy-MM-dd'T'HH:mm:ssssZ");
                 @Override
@@ -137,28 +137,39 @@ public class RoomDayView extends ListActivity {
             });
 
 //            Log.d("SortedArray", events.toString());
-            for(int i = 0; i < events.length; i++) {
-                System.out.println(events[i].getJSONObject("start").getString("dateTime"));
+            JSONObject[] validEvents = new JSONObject[mEventArray.length()];
+            SimpleDateFormat sdfToDate = new SimpleDateFormat
+                    ("yyyy-MM-dd'T'HH:mm:ssssZ");
+            int counter = 0;
+            for(int i = 0; i < allTodayEvents.length; i++) {
+                Date date1 = sdfToDate.parse(allTodayEvents[i].getJSONObject("end").getString("dateTime"));
+                Date currentDate = new Date();
+                if(date1.compareTo(currentDate) >= 0) {
+                    // remove expired events for the day
+                    validEvents[counter] = allTodayEvents[i];
+                    counter++;
+                }
+                System.out.println(allTodayEvents[i].getJSONObject("start").getString("dateTime"));
             }
 
 
-            for(int i = 0; i < events.length; i++) {
+            for(int i = 0; i < validEvents.length; i++) {
                 if(i == 0) {
-                    mCurrentEventName = events[i].getString("summary");
-                    mCurrentEventStartTime = timeBuilder(events[i].getJSONObject("start")
+                    mCurrentEventName = validEvents[i].getString("summary");
+                    mCurrentEventStartTime = timeBuilder(validEvents[i].getJSONObject("start")
                             .getString("dateTime"));
-                    mCurrentEventEndTime = timeBuilder(events[i].getJSONObject("end")
+                    mCurrentEventEndTime = timeBuilder(validEvents[i].getJSONObject("end")
                             .getString("dateTime"));
 
                 } else {
                     HashMap<String,String> temp = new HashMap<String,String>();
-                    temp.put("event", events[i].getString("summary"));
-                    String startTime = timeBuilder(events[i].getJSONObject("start")
+                    temp.put("event", validEvents[i].getString("summary"));
+                    String startTime = timeBuilder(validEvents[i].getJSONObject("start")
                             .getString("dateTime"));
 
                     temp.put("startTime", startTime);
 
-                    String endTime = timeBuilder(events[i].getJSONObject("end")
+                    String endTime = timeBuilder(validEvents[i].getJSONObject("end")
                             .getString("dateTime"));
                     temp.put("endTime", endTime);
                     list.add(temp);
