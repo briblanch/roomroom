@@ -40,7 +40,9 @@ class Room: NSObject, Equatable {
     }
 
     func roomIsOccupied() {
-        roomApi.getRoomStatus(forRoom: self) 
+        roomApi.getRoomStatus(forRoom: self,){(result, error) in
+            
+        }
     }
 }
 

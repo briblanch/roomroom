@@ -61,6 +61,14 @@ class RoomApiClient: NSObject {
             }
         }
     }
+
+    func getRoomBackgroudImage(forRoom room: Room, completion: completionHandler) {
+        let URL = "/api/room/img/"
+        
+        HTTPRequestManager.sharedInstance.GETImage(URL) { (image, error) in
+            completion(image, error)
+        }
+    }
     
     func getRoomStatus(forRoom room: Room, completion: completionHandler) {
         let URL = room.motionIp!

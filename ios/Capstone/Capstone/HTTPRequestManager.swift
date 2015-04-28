@@ -49,6 +49,18 @@ class HTTPRequestManager: NSObject {
         }
     }
 
+    func GETImage(URL: String, completion: completionHandler?) {
+        if let requestURL = self.requestURL(URL) {
+            Alamofire.request(.GET, requestURL, parameters: nil).response() {
+                (_, _, data, _) in
+                let image = UIImage(data: data! as! NSData)
+                if (completion != nil) {
+                    completion!(image, nil)
+                }
+            }
+        }
+    }
+
     private func requestURL(URL: String) -> String? {
         if let requestURL = NSURL(string: URL, relativeToURL: NSURL(string: self.baseURL!)) {
             return requestURL.absoluteString!
