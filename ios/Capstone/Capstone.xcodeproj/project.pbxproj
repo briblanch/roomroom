@@ -18,6 +18,8 @@
 		55323E4B1A1D978100683378 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55323E491A1D978100683378 /* LaunchScreen.xib */; };
 		55323E571A1D978100683378 /* CapstoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55323E561A1D978100683378 /* CapstoneTests.swift */; };
 		55323E631A1D9D7800683378 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55323E621A1D9D7800683378 /* Room.swift */; };
+		557884D01AE9BD540041B434 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 557884CE1AE9BD540041B434 /* OpenSans-Light.ttf */; };
+		557884D11AE9BD540041B434 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 557884CF1AE9BD540041B434 /* OpenSans-Regular.ttf */; };
 		559511261A9BE0530010E8E0 /* RoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559511251A9BE0530010E8E0 /* RoomViewController.swift */; };
 		55D338651A1E99A800D73E3A /* HTTPRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D338641A1E99A800D73E3A /* HTTPRequestManager.swift */; };
 		55D338721A1E9D2B00D73E3A /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55D3386C1A1E9D1100D73E3A /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -87,7 +89,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		049BFDB24C06441DBD81EDAB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		550A27AD1A21986900EE0EBE /* EventTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventTableViewCell.xib; sourceTree = "<group>"; };
 		550A27AF1A21989200EE0EBE /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		552000FC1A9BE91A003D58F7 /* RoomSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomSettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +104,8 @@
 		55323E551A1D978100683378 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55323E561A1D978100683378 /* CapstoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapstoneTests.swift; sourceTree = "<group>"; };
 		55323E621A1D9D7800683378 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
+		557884CE1AE9BD540041B434 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Light.ttf"; path = "../../../../../../Desktop/OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		557884CF1AE9BD540041B434 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "../../../../../../Desktop/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		559511251A9BE0530010E8E0 /* RoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomViewController.swift; sourceTree = "<group>"; };
 		559707C11AA7ABBE00CEC97B /* Roomroom-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Roomroom-BridgingHeader.h"; sourceTree = "<group>"; };
 		55D338641A1E99A800D73E3A /* HTTPRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequestManager.swift; sourceTree = "<group>"; };
@@ -156,7 +159,6 @@
 				55323E3D1A1D978100683378 /* Capstone */,
 				55323E531A1D978100683378 /* CapstoneTests */,
 				55323E3C1A1D978100683378 /* Products */,
-				55D338661A1E9D1100D73E3A /* Alamofire.xcodeproj */,
 				83085B3D75BF4092A153DC7D /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -173,6 +175,7 @@
 		55323E3D1A1D978100683378 /* Capstone */ = {
 			isa = PBXGroup;
 			children = (
+				557884CC1AE9BD250041B434 /* Resources */,
 				55323E401A1D978100683378 /* AppDelegate.swift */,
 				552000FF1A9BEE67003D58F7 /* Constants.swift */,
 				55DFA01E1A952DF40081B11E /* DateHelpers.swift */,
@@ -182,7 +185,6 @@
 				55323E441A1D978100683378 /* Main.storyboard */,
 				550A27AD1A21986900EE0EBE /* EventTableViewCell.xib */,
 				55323E491A1D978100683378 /* LaunchScreen.xib */,
-				55323E471A1D978100683378 /* Images.xcassets */,
 				55323E3E1A1D978100683378 /* Supporting Files */,
 				991A057B8C3D42622B09208C /* UI */,
 				559707C11AA7ABBE00CEC97B /* Roomroom-BridgingHeader.h */,
@@ -215,6 +217,24 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		557884CC1AE9BD250041B434 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				557884CD1AE9BD310041B434 /* fonts */,
+				55323E471A1D978100683378 /* Images.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		557884CD1AE9BD310041B434 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				557884CE1AE9BD540041B434 /* OpenSans-Light.ttf */,
+				557884CF1AE9BD540041B434 /* OpenSans-Regular.ttf */,
+			);
+			name = fonts;
+			sourceTree = "<group>";
+		};
 		55D338671A1E9D1100D73E3A /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,7 +249,7 @@
 		83085B3D75BF4092A153DC7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				049BFDB24C06441DBD81EDAB /* libPods.a */,
+				55D338661A1E9D1100D73E3A /* Alamofire.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -369,6 +389,8 @@
 				550A27AE1A21986900EE0EBE /* EventTableViewCell.xib in Resources */,
 				55323E461A1D978100683378 /* Main.storyboard in Resources */,
 				55323E4B1A1D978100683378 /* LaunchScreen.xib in Resources */,
+				557884D01AE9BD540041B434 /* OpenSans-Light.ttf in Resources */,
+				557884D11AE9BD540041B434 /* OpenSans-Regular.ttf in Resources */,
 				55323E481A1D978100683378 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

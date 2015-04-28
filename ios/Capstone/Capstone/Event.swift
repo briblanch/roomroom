@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Event: NSObject {
+class Event: NSObject, NSCopying {
     var summary: String
     var start: NSDate
     var end: NSDate
@@ -21,6 +21,11 @@ class Event: NSObject {
         self.creator = creator
     }
 
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        let event = Event(summary: self.summary, start:self.start, end: self.end, creator: self.creator)
+        return event
+    }
+
     class func parseDateString(dateString: String) -> NSDate? {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
@@ -31,6 +36,13 @@ class Event: NSObject {
     class func eventStringForRequest(date: NSDate) -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
+        return dateFormatter.stringFromDate(date)
+    }
+
+    class func displayTimeForDate(date: NSDate) -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.timeZone = NSTimeZone.systemTimeZone()
         return dateFormatter.stringFromDate(date)
     }
 }

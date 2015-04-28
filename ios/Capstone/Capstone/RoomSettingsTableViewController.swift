@@ -5,6 +5,7 @@
 import UIKit
 
 class RoomSettingsTableViewController: UITableViewController {
+    @IBOutlet weak var doneButton: UIBarButtonItem!
 
     // MARK: - Instance vars
     private lazy var roomApi = RoomApiClient()
@@ -13,6 +14,7 @@ class RoomSettingsTableViewController: UITableViewController {
     private var rooms = [Room]()
     private var defaultRoomId: String? {
         didSet {
+            doneButton.enabled = true
             defaults.setObject(defaultRoomId, forKey: Constants.ROOM_KEY)
         }
     }
@@ -22,6 +24,8 @@ class RoomSettingsTableViewController: UITableViewController {
 
         if let storedRoomId = defaults.stringForKey(Constants.ROOM_KEY) {
             defaultRoomId = storedRoomId
+        } else {
+            doneButton.enabled = false
         }
 
         roomApi.getRooms { (remoteRooms, error) in
@@ -67,6 +71,7 @@ class RoomSettingsTableViewController: UITableViewController {
 
         if (room.id == defaultRoomId) {
             cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            cell.accessoryView?.backgroundColor = UIColor(red: 84/255, green: 201/255, blue: 0, alpha: 1)
         }
 
         return cell

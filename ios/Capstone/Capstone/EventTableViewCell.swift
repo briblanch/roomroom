@@ -14,8 +14,8 @@ class EventTableViewCell: UITableViewCell {
 
     var event: Event? {
         didSet {
-            self.eventTimeLabel.text = self.displayTimeForDate(self.event!.start) + " - " +
-                                       self.displayTimeForDate(self.event!.end)
+            self.eventTimeLabel.text = Event.displayTimeForDate(self.event!.start) + " - " +
+                                       Event.displayTimeForDate(self.event!.end)
             
             self.eventTitleLabel.text = self.event!.summary
         }
@@ -26,12 +26,5 @@ class EventTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-    }
-
-    func displayTimeForDate(date: NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
-        dateFormatter.timeZone = NSTimeZone.systemTimeZone()
-        return dateFormatter.stringFromDate(date)
     }
 }

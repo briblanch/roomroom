@@ -14,6 +14,7 @@ class Room: NSObject, Equatable {
     var calendar: String
     var capacity: Int
     var roomUsed: String
+    var motionIp: String?
 
     init(id: String, name: String, calendar: String, capacity: Int, roomUsed: String) {
         self.id = id
@@ -21,6 +22,15 @@ class Room: NSObject, Equatable {
         self.calendar = calendar
         self.capacity = capacity
         self.roomUsed = roomUsed
+    }
+
+    init(id: String, name: String, calendar: String, capacity: Int, roomUsed: String, motionIp: String?) {
+        self.id = id
+        self.name = name
+        self.calendar = calendar
+        self.capacity = capacity
+        self.roomUsed = roomUsed
+        self.motionIp = motionIp!
     }
 
     override func isEqual(object: AnyObject?) -> Bool {

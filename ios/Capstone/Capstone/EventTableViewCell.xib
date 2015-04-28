@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Light.ttf">
+            <string>OpenSans-Light</string>
+        </mutableArray>
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="eventCell" rowHeight="80" id="OKd-7N-ghp" customClass="EventTableViewCell" customModule="Capstone" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="667" height="80"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OKd-7N-ghp" id="GQs-GQ-Dy0">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OKd-7N-ghp" id="GQs-GQ-Dy0">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dev Teach and Learn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCA-yf-MU6">
-                        <rect key="frame" x="20" y="8" width="626" height="45"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00 - 1:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEP-68-sfS">
+                        <rect key="frame" x="61" y="37" width="544" height="42"/>
+                        <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="23"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00 - 1:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEP-68-sfS">
-                        <rect key="frame" x="68" y="44" width="530" height="42"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dev Teach and Learn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCA-yf-MU6">
+                        <rect key="frame" x="13" y="0.0" width="640" height="45"/>
+                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="25"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="cEP-68-sfS" firstAttribute="leading" secondItem="GQs-GQ-Dy0" secondAttribute="leadingMargin" constant="60" id="14R-HM-qqT"/>
-                    <constraint firstItem="iCA-yf-MU6" firstAttribute="top" secondItem="GQs-GQ-Dy0" secondAttribute="topMargin" id="749-9Y-9Kh"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="iCA-yf-MU6" secondAttribute="bottom" constant="18.5" id="MaB-Bl-sPM"/>
-                    <constraint firstItem="cEP-68-sfS" firstAttribute="top" secondItem="GQs-GQ-Dy0" secondAttribute="topMargin" constant="36" id="SZH-48-ww8"/>
-                    <constraint firstItem="cEP-68-sfS" firstAttribute="centerX" secondItem="iCA-yf-MU6" secondAttribute="centerX" id="ZWQ-A5-3E9"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="cEP-68-sfS" secondAttribute="bottom" constant="-14.5" id="kzB-xy-G52"/>
-                    <constraint firstItem="iCA-yf-MU6" firstAttribute="leading" secondItem="GQs-GQ-Dy0" secondAttribute="leadingMargin" constant="12" id="nQu-Mn-vLK"/>
-                    <constraint firstItem="iCA-yf-MU6" firstAttribute="centerX" secondItem="GQs-GQ-Dy0" secondAttribute="centerX" id="w9B-Af-b19"/>
+                    <constraint firstItem="cEP-68-sfS" firstAttribute="leading" secondItem="GQs-GQ-Dy0" secondAttribute="leadingMargin" constant="53" id="GXH-SF-4kf"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="iCA-yf-MU6" secondAttribute="bottom" constant="26" id="Hmz-Nf-N1c"/>
+                    <constraint firstItem="iCA-yf-MU6" firstAttribute="leading" secondItem="GQs-GQ-Dy0" secondAttribute="leadingMargin" constant="5" id="VM3-bj-qlz"/>
+                    <constraint firstItem="cEP-68-sfS" firstAttribute="top" secondItem="GQs-GQ-Dy0" secondAttribute="topMargin" constant="29" id="Xen-x7-Cjz"/>
+                    <constraint firstItem="iCA-yf-MU6" firstAttribute="top" secondItem="GQs-GQ-Dy0" secondAttribute="top" id="bph-qB-XXJ"/>
+                    <constraint firstItem="cEP-68-sfS" firstAttribute="centerX" secondItem="iCA-yf-MU6" secondAttribute="centerX" id="hfb-UX-zvn"/>
+                    <constraint firstItem="cEP-68-sfS" firstAttribute="centerX" secondItem="GQs-GQ-Dy0" secondAttribute="centerX" id="nd2-ye-N5N"/>
+                    <constraint firstAttribute="bottom" secondItem="cEP-68-sfS" secondAttribute="bottom" id="xBp-L2-TQh"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="eventTimeLabel" destination="cEP-68-sfS" id="f3c-YR-jfj"/>
                 <outlet property="eventTitleLabel" destination="iCA-yf-MU6" id="rxz-k5-a2V"/>
