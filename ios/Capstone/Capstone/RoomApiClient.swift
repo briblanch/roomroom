@@ -23,7 +23,8 @@ class RoomApiClient: NSObject {
                     rooms.append(Room(id: room["id"] as String,
                                     name: room["name"] as String,
                                 calendar: room["calendar"] as String,
-                                capacity: room["capacity"] as Int))
+                                capacity: room["capacity"] as Int,
+                                roomUsed: "False" as String))
                 }
                 
                 completion(rooms, nil)
@@ -59,5 +60,17 @@ class RoomApiClient: NSObject {
                 completion(nil, error)
             }
         }
+    }
+    
+    func getRoomStatus(forRoom room: Room) {
+        let URL = "http://10.180.52.165"
+        
+        HTTPRequestManager.sharedInstance.GET(URL, paramaters: nil) { (responseObject, error) in
+            if let responseDict = responseObject as? Dictionary<String, String> {
+                room.roomUsed = responseDict["roomUsed"]!
+            }
+
+        }
+        
     }
 }
