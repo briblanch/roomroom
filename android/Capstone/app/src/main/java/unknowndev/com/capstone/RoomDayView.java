@@ -44,6 +44,8 @@ public class RoomDayView extends ListActivity {
     private static String mCurrentEventName;
     private static String mCurrentEventStartTime;
     private static String mCurrentEventEndTime;
+    private static String mRoomStatus;
+    private static String mDashString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +102,7 @@ public class RoomDayView extends ListActivity {
             StrictMode.setThreadPolicy(policy);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssssZ");
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
             Webb webb = Webb.create();
             JSONObject result = webb
@@ -142,7 +144,8 @@ public class RoomDayView extends ListActivity {
                     ("yyyy-MM-dd'T'HH:mm:ssssZ");
             int counter = 0;
             for(int i = 0; i < allTodayEvents.length; i++) {
-                Date date1 = sdfToDate.parse(allTodayEvents[i].getJSONObject("end").getString("dateTime"));
+                Date date1 = sdfToDate.parse(allTodayEvents[i].getJSONObject("end")
+                        .getString("dateTime"));
                 Date currentDate = new Date();
                 if(date1.compareTo(currentDate) >= 0) {
                     // remove expired events for the day
@@ -152,15 +155,36 @@ public class RoomDayView extends ListActivity {
                 System.out.println(allTodayEvents[i].getJSONObject("start").getString("dateTime"));
             }
 
-
-            for(int i = 0; i < validEvents.length; i++) {
+            Date currentDate = new Date();
+            for(int i = 0; i < counter; i++) {
                 if(i == 0) {
-                    mCurrentEventName = validEvents[i].getString("summary");
-                    mCurrentEventStartTime = timeBuilder(validEvents[i].getJSONObject("start")
+                    Date eventStart = sdfToDate.parse(validEvents[i].getJSONObject("start").getString("dateTime"));
+                    Date eventEnd = sdfToDate.parse(validEvents[i].getJSONObject("end")
                             .getString("dateTime"));
-                    mCurrentEventEndTime = timeBuilder(validEvents[i].getJSONObject("end")
-                            .getString("dateTime"));
+                    if(eventStart.compareTo(currentDate) <= 0 && eventEnd.compareTo(currentDate) >= 0) {
+                        mCurrentEventName = validEvents[i].getString("summary");
+                        mCurrentEventStartTime = timeBuilder(validEvents[i].getJSONObject("start")
+                                .getString("dateTime"));
+                        mCurrentEventEndTime = timeBuilder(validEvents[i].getJSONObject("end")
+                                .getString("dateTime"));
+                        mRoomStatus = "Busy";
+                        mDashString = " - ";
+                    } else {
+                        // set room status
+                        mRoomStatus = "Available";
 
+                        HashMap<String,String> temp = new HashMap<String,String>();
+                        temp.put("event", validEvents[i].getString("summary"));
+                        String startTime = timeBuilder(validEvents[i].getJSONObject("start")
+                                .getString("dateTime"));
+
+                        temp.put("startTime", startTime);
+
+                        String endTime = timeBuilder(validEvents[i].getJSONObject("end")
+                                .getString("dateTime"));
+                        temp.put("endTime", endTime);
+                        list.add(temp);
+                    }
                 } else {
                     HashMap<String,String> temp = new HashMap<String,String>();
                     temp.put("event", validEvents[i].getString("summary"));
@@ -234,10 +258,29 @@ public class RoomDayView extends ListActivity {
 
             lv.setAdapter(adapter);
 
-            ((TextView)rootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
-            ((TextView)rootView.findViewById(R.id.eventNameTextView)).setText(mCurrentEventName);
-            ((TextView)rootView.findViewById(R.id.startTimeTextView)).setText(mCurrentEventStartTime);
-            ((TextView)rootView.findViewById(R.id.endTimeTextView)).setText(mCurrentEventEndTime);
+            if(mRoomTitle != null) {
+                ((TextView)rootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
+            }
+//            ((TextView)rootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
+            if(mCurrentEventName != null) {
+                ((TextView)rootView.findViewById(R.id.eventNameTextView)).setText(mCurrentEventName);
+            }
+
+            if(mCurrentEventStartTime != null) {
+                ((TextView)rootView.findViewById(R.id.startTimeTextView)).setText(mCurrentEventStartTime);
+            }
+
+            if(mCurrentEventEndTime != null) {
+                ((TextView)rootView.findViewById(R.id.endTimeTextView)).setText(mCurrentEventEndTime);
+            }
+
+            if(mRoomStatus != null) {
+                ((TextView)rootView.findViewById(R.id.inUseTextView)).setText(mRoomStatus);
+            }
+
+            if(mDashString != null) {
+                ((TextView)rootView.findViewById(R.id.dashTextView)).setText(mDashString);
+            }
 
             return rootView;
         }
