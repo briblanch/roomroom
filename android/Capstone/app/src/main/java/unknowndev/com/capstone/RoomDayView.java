@@ -52,7 +52,8 @@ public class RoomDayView extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_day_view);
         Intent intent = getIntent();
-        mRoomTitle = intent.getStringExtra(HomeActivity.ROOM_TITLE);
+        Room selectedRoom = intent.getParcelableExtra("selectedRoom");
+        mRoomTitle = selectedRoom.getName();
 //        setTitle(roomTitle);
 
 //        SimpleAdapter adapter = new SimpleAdapter(
@@ -64,7 +65,7 @@ public class RoomDayView extends ListActivity {
 //        );
 
         list.clear();
-        getData(intent.getStringExtra(HomeActivity.ROOM_ID));
+        getData(selectedRoom.getId());
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()

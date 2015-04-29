@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.StrictMode;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -123,11 +124,11 @@ public class HomeActivity extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), RoomDayView.class);
-                        String roomTitle = (String)parent.getItemAtPosition(position);
-                        intent.putExtra(ROOM_TITLE, roomTitle);
                     try {
-                        String roomId = mRoomArray.getJSONObject(position).getString("id");
-                        intent.putExtra(ROOM_ID, roomId);
+                        Room selectedRoom = new Room();
+                        selectedRoom.setName(mRoomArray.getJSONObject(position).getString("name"));
+                        selectedRoom.setId(mRoomArray.getJSONObject(position).getString("id"));
+                        intent.putExtra("selectedRoom", selectedRoom);
                         startActivity(intent);
                     } catch(Exception e) {
 
