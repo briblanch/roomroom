@@ -249,6 +249,7 @@ public class RoomDayView extends ListActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_room_day_view, container, false);
             ListView lv = (ListView)rootView.findViewById(R.id.eventListView);
+
             SimpleAdapter adapter = new SimpleAdapter(
                     getActivity(),
                     list,

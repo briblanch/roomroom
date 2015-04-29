@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -16,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +43,21 @@ public class HomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences preferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = preferences.getString("selectedRoom", "");
+
+//        Room selectedRoom;
+
+        if(!json.equals("")) {
+            Intent intent = new Intent(this, RoomDayView.class);
+            intent.putExtra("selectedRoom", gson.fromJson(json, Room.class));
+            startActivity(intent);
+        }
+//        Room selectedRoom = gson.fromJson(json, Room.class);
+
+
         setContentView(R.layout.activity_home);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -128,6 +146,22 @@ public class HomeActivity extends Activity {
                         Room selectedRoom = new Room();
                         selectedRoom.setName(mRoomArray.getJSONObject(position).getString("name"));
                         selectedRoom.setId(mRoomArray.getJSONObject(position).getString("id"));
+
+                        Gson gson = new Gson();
+                        String json = gson.toJson(selectedRoom);
+
+
+
+                        // Persist selected room locally
+                        String selectedRoomId = mRoomArray.getJSONObject(position).getString("id");
+                        SharedPreferences preferences = mContext.getSharedPreferences("MyPreferences",
+                                Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+//                        editor.putString("selectedRoomId", selectedRoomId);
+                        editor.putString("selectedRoom", json);
+
+                        editor.commit();
+
                         intent.putExtra("selectedRoom", selectedRoom);
                         startActivity(intent);
                     } catch(Exception e) {
