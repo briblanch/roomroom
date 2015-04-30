@@ -1,8 +1,10 @@
 package unknowndev.com.capstone;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -95,7 +97,7 @@ public class HomeActivity extends Activity {
         private ArrayList<String> roomNames = new ArrayList<>();
         private ArrayList<Integer> roomImages = new ArrayList<>();
 
-        private GridView gridView;
+        private GridView mGridView;
 
         private static final String baseURL = "http://asu-capstone.appspot.com/api/rooms";
 
@@ -122,7 +124,15 @@ public class HomeActivity extends Activity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            roomNames.clear();
+                            roomImages.clear();
                             requestDataRefresh(rootView);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                     }, 5000);
@@ -136,36 +146,56 @@ public class HomeActivity extends Activity {
             mAdapter = new GridViewAdapter(getActivity(), roomNames, roomImages);
 
             // Set custom adapter to gridview
-            gridView = (GridView) rootView.findViewById(R.id.gridView1);
-            gridView.setAdapter(mAdapter);
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mGridView = (GridView) rootView.findViewById(R.id.gridView1);
+            mGridView.setAdapter(mAdapter);
+            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), RoomDayView.class);
+                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                    final Intent intent = new Intent(getActivity(), RoomDayView.class);
                     try {
-                        Room selectedRoom = new Room();
-                        selectedRoom.setName(mRoomArray.getJSONObject(position).getString("name"));
-                        selectedRoom.setId(mRoomArray.getJSONObject(position).getString("id"));
-                        selectedRoom.setBlobKey(mRoomArray.getJSONObject(position).getString("blob_key"));
-                        selectedRoom.setCapacity(mRoomArray.getJSONObject(position).getInt("capacity"));
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Set Default Room")
+                                .setMessage("Make this your Default Room?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try {
+                                            Room selectedRoom = new Room();
+                                            selectedRoom.setName(mRoomArray.getJSONObject(position).getString("name"));
+                                            selectedRoom.setId(mRoomArray.getJSONObject(position).getString("id"));
+                                            selectedRoom.setBlobKey(mRoomArray.getJSONObject(position).getString("blob_key"));
+                                            selectedRoom.setCapacity(mRoomArray.getJSONObject(position).getInt("capacity"));
 
-                        Gson gson = new Gson();
-                        String json = gson.toJson(selectedRoom);
+                                            Gson gson = new Gson();
+                                            String json = gson.toJson(selectedRoom);
 
 
 
-                        // Persist selected room locally
-                        String selectedRoomId = mRoomArray.getJSONObject(position).getString("id");
-                        SharedPreferences preferences = mContext.getSharedPreferences("MyPreferences",
-                                Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
+                                            // Persist selected room locally
+                                            String selectedRoomId = mRoomArray.getJSONObject(position).getString("id");
+                                            SharedPreferences preferences = mContext.getSharedPreferences("MyPreferences",
+                                                    Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = preferences.edit();
 //                        editor.putString("selectedRoomId", selectedRoomId);
-                        editor.putString("selectedRoom", json);
+                                            editor.putString("selectedRoom", json);
 
-                        editor.commit();
+                                            editor.commit();
 
-                        intent.putExtra("selectedRoom", selectedRoom);
-                        startActivity(intent);
+                                            intent.putExtra("selectedRoom", selectedRoom);
+                                            startActivity(intent);
+                                        } catch(Exception e) {
+
+                                        }
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
+
                     } catch(Exception e) {
 
                     }
