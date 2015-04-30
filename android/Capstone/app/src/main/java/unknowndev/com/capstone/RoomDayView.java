@@ -4,15 +4,23 @@ import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ListFragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -31,13 +39,17 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class RoomDayView extends ListActivity {
 
-    static final ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+    private static ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 
     private static final String baseURL = "http://asu-capstone.appspot.com/api/rooms/events/";
+
+    private static final String baseURLImage = "http://asu-capstone.appspot.com/api/room/image/";
 
     private static JSONArray mEventArray;
     private static String mRoomTitle;
@@ -47,13 +59,31 @@ public class RoomDayView extends ListActivity {
     private static String mRoomStatus;
     private static String mDashString;
 
+    private static Bitmap mRoomImage;
+    private static SimpleAdapter mSimpleAdapter;
+    private static ListView mEventListView;
+
+    private static View mFragmentRootView;
+    private static Timer mRefreshTimer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_day_view);
         Intent intent = getIntent();
-        Room selectedRoom = intent.getParcelableExtra("selectedRoom");
+        final Room selectedRoom = intent.getParcelableExtra("selectedRoom");
         mRoomTitle = selectedRoom.getName();
+
+        // start pulling image
+//        mRoomImage = (ImageView)findViewById(R.id.image);
+        Webb webb = Webb.create();
+        byte[] imageData = webb
+                .get(baseURLImage + selectedRoom.getBlobKey())
+                .ensureSuccess()
+                .asBytes()
+                .getBody();
+        mRoomImage = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
 //        setTitle(roomTitle);
 
 //        SimpleAdapter adapter = new SimpleAdapter(
@@ -65,13 +95,39 @@ public class RoomDayView extends ListActivity {
 //        );
 
         list.clear();
-        getData(selectedRoom.getId());
+        list = getData(selectedRoom.getId());
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        class UpdateTimeTask extends TimerTask {
+
+            public void run() {
+                list = getData(selectedRoom.getId());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSimpleAdapter.notifyDataSetChanged();
+                        refreshCurrentEvent();
+                        mSimpleAdapter = new SimpleAdapter(
+                                getApplicationContext(),
+                                list,
+                                R.layout.custom_row_view,
+                                new String[] {"event", "startTime", "endTime"},
+                                new int[] {R.id.upcomingEventTextView,R.id.upcomingStartTimeTextView, R.id.upcomingEndTimeTextView}
+                        );
+
+                        mEventListView.setAdapter(mSimpleAdapter);
+                    }
+                });
+            }
+        }
+
+        mRefreshTimer = new Timer();
+        mRefreshTimer.schedule(new UpdateTimeTask(), 0, 10000);
     }
 
     @Override
@@ -96,12 +152,31 @@ public class RoomDayView extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void getData(String roomId) {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            // Reset current event text fields
+            mCurrentEventName = "";
+            mCurrentEventStartTime = "";
+            mCurrentEventEndTime = "";
+            mDashString = "";
+            mRoomStatus = "Available";
+            list.clear();
+            mRefreshTimer.cancel();
+//            return true;
+            return super.onKeyDown(keyCode, event);
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private ArrayList<HashMap<String,String>> getData(String roomId) {
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.
                     ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
+            ArrayList<HashMap<String,String>> tempList = new ArrayList<HashMap<String,String>>();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssssZ");
 //            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
@@ -173,6 +248,10 @@ public class RoomDayView extends ListActivity {
                     } else {
                         // set room status
                         mRoomStatus = "Available";
+                        mCurrentEventName = "";
+                        mCurrentEventStartTime = "";
+                        mCurrentEventEndTime = "";
+                        mDashString = "";
 
                         HashMap<String,String> temp = new HashMap<String,String>();
                         temp.put("event", validEvents[i].getString("summary"));
@@ -184,7 +263,7 @@ public class RoomDayView extends ListActivity {
                         String endTime = timeBuilder(validEvents[i].getJSONObject("end")
                                 .getString("dateTime"));
                         temp.put("endTime", endTime);
-                        list.add(temp);
+                        tempList.add(temp);
                     }
                 } else {
                     HashMap<String,String> temp = new HashMap<String,String>();
@@ -197,14 +276,22 @@ public class RoomDayView extends ListActivity {
                     String endTime = timeBuilder(validEvents[i].getJSONObject("end")
                             .getString("dateTime"));
                     temp.put("endTime", endTime);
-                    list.add(temp);
+                    tempList.add(temp);
                 }
-
-
             }
+
+            if (counter == 0) {
+                mRoomStatus = "Available";
+                mCurrentEventName = "";
+                mCurrentEventStartTime = "";
+                mCurrentEventEndTime = "";
+                mDashString = "";
+            }
+            return tempList;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return new ArrayList<HashMap<String,String>>();
     }
 
     private String timeBuilder(String dateString) {
@@ -239,6 +326,32 @@ public class RoomDayView extends ListActivity {
         return "";
     }
 
+    private static void refreshCurrentEvent() {
+        if(mRoomTitle != null) {
+            ((TextView)mFragmentRootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
+        }
+//            ((TextView)rootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
+        if(mCurrentEventName != null) {
+            ((TextView)mFragmentRootView.findViewById(R.id.eventNameTextView)).setText(mCurrentEventName);
+        }
+
+        if(mCurrentEventStartTime != null) {
+            ((TextView)mFragmentRootView.findViewById(R.id.startTimeTextView)).setText(mCurrentEventStartTime);
+        }
+
+        if(mCurrentEventEndTime != null) {
+            ((TextView)mFragmentRootView.findViewById(R.id.endTimeTextView)).setText(mCurrentEventEndTime);
+        }
+
+        if(mRoomStatus != null) {
+            ((TextView)mFragmentRootView.findViewById(R.id.inUseTextView)).setText(mRoomStatus);
+        }
+
+        if(mDashString != null) {
+            ((TextView)mFragmentRootView.findViewById(R.id.dashTextView)).setText(mDashString);
+        }
+    }
+
     public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {
@@ -247,10 +360,16 @@ public class RoomDayView extends ListActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_room_day_view, container, false);
-            ListView lv = (ListView)rootView.findViewById(R.id.eventListView);
+            mFragmentRootView = inflater.inflate(R.layout.fragment_room_day_view, container, false);
+            mEventListView = (ListView)mFragmentRootView.findViewById(R.id.eventListView);
+            RelativeLayout rl = (RelativeLayout)mFragmentRootView.findViewById(R.id.eventContainer);
+            rl.setBackground(new BitmapDrawable(getResources(),mRoomImage));
 
-            SimpleAdapter adapter = new SimpleAdapter(
+//            ((TextView)rootView.findViewById(R.id.eventNameTextView)).setText("");
+//            ((TextView)rootView.findViewById(R.id.startTimeTextView)).setText("");
+//            ((TextView)rootView.findViewById(R.id.endTimeTextView)).setText("");
+
+            mSimpleAdapter = new SimpleAdapter(
                     getActivity(),
                     list,
                     R.layout.custom_row_view,
@@ -258,33 +377,34 @@ public class RoomDayView extends ListActivity {
                     new int[] {R.id.upcomingEventTextView,R.id.upcomingStartTimeTextView, R.id.upcomingEndTimeTextView}
             );
 
-            lv.setAdapter(adapter);
+            mEventListView.setAdapter(mSimpleAdapter);
 
-            if(mRoomTitle != null) {
-                ((TextView)rootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
-            }
-//            ((TextView)rootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
-            if(mCurrentEventName != null) {
-                ((TextView)rootView.findViewById(R.id.eventNameTextView)).setText(mCurrentEventName);
-            }
+            refreshCurrentEvent();
+//            if(mRoomTitle != null) {
+//                ((TextView)rootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
+//            }
+////            ((TextView)rootView.findViewById(R.id.roomNameTextView)).setText(mRoomTitle);
+//            if(mCurrentEventName != null) {
+//                ((TextView)rootView.findViewById(R.id.eventNameTextView)).setText(mCurrentEventName);
+//            }
+//
+//            if(mCurrentEventStartTime != null) {
+//                ((TextView)rootView.findViewById(R.id.startTimeTextView)).setText(mCurrentEventStartTime);
+//            }
+//
+//            if(mCurrentEventEndTime != null) {
+//                ((TextView)rootView.findViewById(R.id.endTimeTextView)).setText(mCurrentEventEndTime);
+//            }
+//
+//            if(mRoomStatus != null) {
+//                ((TextView)rootView.findViewById(R.id.inUseTextView)).setText(mRoomStatus);
+//            }
+//
+//            if(mDashString != null) {
+//                ((TextView)rootView.findViewById(R.id.dashTextView)).setText(mDashString);
+//            }
 
-            if(mCurrentEventStartTime != null) {
-                ((TextView)rootView.findViewById(R.id.startTimeTextView)).setText(mCurrentEventStartTime);
-            }
-
-            if(mCurrentEventEndTime != null) {
-                ((TextView)rootView.findViewById(R.id.endTimeTextView)).setText(mCurrentEventEndTime);
-            }
-
-            if(mRoomStatus != null) {
-                ((TextView)rootView.findViewById(R.id.inUseTextView)).setText(mRoomStatus);
-            }
-
-            if(mDashString != null) {
-                ((TextView)rootView.findViewById(R.id.dashTextView)).setText(mDashString);
-            }
-
-            return rootView;
+            return mFragmentRootView;
         }
     }
 }

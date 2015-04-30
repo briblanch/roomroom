@@ -10,13 +10,15 @@ public class Room implements Parcelable {
     private String mCalender;
     private int mCapacity;
     private String mBlobKey;
+    private String mMotionIp;
 
-    public Room(String id, String name, String calender, int capacity, String blobKey) {
+    public Room(String id, String name, String calender, int capacity, String blobKey, String motionIp) {
         mId = id;
         mName = name;
         mCalender = calender;
         mCapacity = capacity;
         mBlobKey = blobKey;
+        mMotionIp = motionIp;
     }
 
     public Room() {
@@ -25,6 +27,7 @@ public class Room implements Parcelable {
         mCalender = "";
         mCapacity = 0;
         mBlobKey = "";
+        mMotionIp = "";
     }
 
     public int describeContents() {
@@ -37,6 +40,7 @@ public class Room implements Parcelable {
         out.writeString(mCalender);
         out.writeInt(mCapacity);
         out.writeString(mBlobKey);
+        out.writeString(mMotionIp);
     }
 
     public static final Parcelable.Creator<Room> CREATOR = new Parcelable.Creator<Room>() {
@@ -55,6 +59,7 @@ public class Room implements Parcelable {
         mCalender = in.readString();
         mCapacity = in.readInt();
         mBlobKey = in.readString();
+        mMotionIp = in.readString();
     }
 
     public String getId() {
@@ -95,5 +100,13 @@ public class Room implements Parcelable {
 
     public void setBlobKey(String blobKey) {
         mBlobKey = blobKey;
+    }
+
+    public String getMotionIp() {
+        return mMotionIp;
+    }
+
+    public void setMotionIp(String motionIp) {
+        mMotionIp = motionIp;
     }
 }

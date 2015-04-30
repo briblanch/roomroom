@@ -125,7 +125,7 @@ public class HomeActivity extends Activity {
                             requestDataRefresh(rootView);
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
-                    }, 2000);
+                    }, 5000);
                 }
             });
 
@@ -146,6 +146,8 @@ public class HomeActivity extends Activity {
                         Room selectedRoom = new Room();
                         selectedRoom.setName(mRoomArray.getJSONObject(position).getString("name"));
                         selectedRoom.setId(mRoomArray.getJSONObject(position).getString("id"));
+                        selectedRoom.setBlobKey(mRoomArray.getJSONObject(position).getString("blob_key"));
+                        selectedRoom.setCapacity(mRoomArray.getJSONObject(position).getInt("capacity"));
 
                         Gson gson = new Gson();
                         String json = gson.toJson(selectedRoom);
