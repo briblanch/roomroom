@@ -361,6 +361,7 @@ public class RoomDayView extends ListActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             mFragmentRootView = inflater.inflate(R.layout.fragment_room_day_view, container, false);
+            mFragmentRootView.setKeepScreenOn(true);
             mEventListView = (ListView)mFragmentRootView.findViewById(R.id.eventListView);
             RelativeLayout rl = (RelativeLayout)mFragmentRootView.findViewById(R.id.eventContainer);
             rl.setBackground(new BitmapDrawable(getResources(),mRoomImage));
